@@ -6,7 +6,7 @@ import io.reactivex.subjects.PublishSubject
 /**
  * Created by arran on 4/12/2017.
  */
-open class BaseMviInteractor<S : BaseMviContract.ViewState, E : BaseMviContract.Intent> : BaseMviContract.Interactor<S, E> {
+open class KontentInteractor<S : KontentContract.ViewState, E : KontentContract.Intent> : KontentContract.Interactor<S, E> {
 
     val intentsSubject: PublishSubject<E> = PublishSubject.create()
     val stateSubject: PublishSubject<S> = PublishSubject.create()

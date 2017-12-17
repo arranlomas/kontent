@@ -1,23 +1,19 @@
 package com.arranlomas.kontent.commons
 
-import android.support.v7.app.AppCompatActivity
-import android.util.Log
+import android.support.v4.app.Fragment
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.observers.DisposableObserver
 
-/**
- * Created by arran on 17/12/2017.
- */
-abstract class BaseMviActivity<S : BaseMviContract.ViewState, E : BaseMviContract.Intent> : BaseMviContract.View<S, E>, AppCompatActivity() {
+abstract class KontentFragment<S : KontentContract.ViewState, E : KontentContract.Intent> : KontentContract.View<S, E>, Fragment() {
 
     override val subscriptions = CompositeDisposable()
-    lateinit override var interactor: BaseMviContract.Interactor<S, E>
+    lateinit override var interactor: KontentContract.Interactor<S, E>
     lateinit override var intents: Observable<E>
     override var onErrorAction: ((Throwable) -> Unit)? = null
 
-    override fun setup(interactor: BaseMviContract.Interactor<S, E>, onErrorAction: ((Throwable) -> Unit)?) {
+    override fun setup(interactor: KontentContract.Interactor<S, E>, onErrorAction: ((Throwable) -> Unit)?) {
         this.interactor = interactor
         this.onErrorAction = onErrorAction
     }
