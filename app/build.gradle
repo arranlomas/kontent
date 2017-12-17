@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion 26
@@ -29,6 +30,15 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     testCompile 'junit:junit:4.12'
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+
+    //RxJava 2 is a required dependency
+    compile 'io.reactivex.rxjava2:rxjava:2.1.6'
+
+    //RxBinding is optional, you can create the rx intent stream yourself but RxBinding makes this much easier
+    compile 'com.jakewharton.rxbinding2:rxbinding:2.0.0'
+
+    //This is the kontent dependency, here you should change this to the jcentre dependency in your apps
+    compile project(':kontent')
 }
 repositories {
     mavenCentral()

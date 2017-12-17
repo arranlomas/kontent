@@ -10,10 +10,10 @@ interface KontentContract {
 
     interface View<S : KontentContract.ViewState, E : KontentContract.Intent> {
         val subscriptions: CompositeDisposable
-        var interactor: KontentContract.Interactor<S, E>
         var intents: Observable<E>
         var onErrorAction: ((Throwable) -> Unit)?
         fun setup(interactor: KontentContract.Interactor<S, E>, onErrorAction: ((Throwable) -> Unit)? = null)
+        fun setup(interactor: KontentContract.Interactor<S, E>)
 
         fun attachIntents(intents: Observable<E>)
 

@@ -12,13 +12,17 @@ import io.reactivex.observers.DisposableObserver
 abstract class KontentActivity<S : KontentContract.ViewState, E : KontentContract.Intent> : KontentContract.View<S, E>, AppCompatActivity() {
 
     override val subscriptions = CompositeDisposable()
-    lateinit override var interactor: KontentContract.Interactor<S, E>
+    private lateinit var interactor: KontentContract.Interactor<S, E>
     lateinit override var intents: Observable<E>
     override var onErrorAction: ((Throwable) -> Unit)? = null
 
     override fun setup(interactor: KontentContract.Interactor<S, E>, onErrorAction: ((Throwable) -> Unit)?) {
         this.interactor = interactor
         this.onErrorAction = onErrorAction
+    }
+
+    override fun setup(interactor: KontentContract.Interactor<S, E>) {
+        this.interactor = interactor
     }
 
     override fun attachIntents(intents: Observable<E>) {

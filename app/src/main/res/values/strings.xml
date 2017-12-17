@@ -1,3 +1,14 @@
 <resources>
-    <string name="app_name">Mvi Sample</string>
+    <string name="signup_title">Get Started</string>
+    <string name="signup_subtitle">Enter your email and password</string>
+    <string name="signup_email">Email</string>
+    <string name="signup_password">Password</string>
+    <string name="signup_username">Username</string>
+    <string name="signup_cta">Signup</string>
+    <string name="signup_already_have_an_account">Already have an account?</string>
+    <string name="signup_sign_in_here"><u>Sign in here</u></string>
+    <string name="signup_invalid_email"><u>Invalid email address</u></string>
+    <string name="signup_invalid_username"><u>Username cannot be empty</u></string>
+    <string name="signup_invalid_password"><u>Password cannot be empty</u></string>
+
 </resources>
