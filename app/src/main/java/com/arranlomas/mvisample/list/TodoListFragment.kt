@@ -2,7 +2,6 @@ package com.arranlomas.mvisample.list
 
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +9,7 @@ import com.arranlomas.kontent.commons.KontentFragment
 import com.arranlomas.mvisample.R
 import com.arranlomas.mvisample.list.objects.TodoListIntent
 import com.arranlomas.mvisample.list.objects.TodoListViewState
+import com.arranlomas.mvisample.models.TodoItemState
 import com.arranlomas.mvisample.repository.ListItemRepository
 import io.reactivex.Observable
 import kotlinx.android.synthetic.main.fragment_list.*
@@ -20,13 +20,17 @@ import kotlinx.android.synthetic.main.fragment_list.*
 internal class TodoListFragment : KontentFragment<TodoListViewState, TodoListIntent>() {
 
     var interactor: TodoListContract.Interactor
+
     val adapter = TodoListAdapter()
 
     init {
         //this step would preferbly be done via dagger ot dependency injects, and the interactor would just be initejected as an interface, this step is vital for testing
         val authRepository = ListItemRepository()
         this.interactor = TodoListInteractor(authRepository)
-        super.setup(interactor)
+        super.setup(interactor, {
+            it.printStackTrace()
+            throw it
+        })
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -43,13 +47,25 @@ internal class TodoListFragment : KontentFragment<TodoListViewState, TodoListInt
     }
 
     fun intents(): Observable<TodoListIntent> {
-        return initialIntent()
+        return Observable.merge(
+                initialIntent(),
+                adapterIntent())
     }
 
     fun initialIntent(): Observable<TodoListIntent> = Observable.just(TodoListIntent.LoadTodoListItems())
 
+    fun adapterIntent(): Observable<TodoListIntent> = Observable.create { emitter ->
+        adapter.onItemSelected = { serverId, selected ->
+            val state = when (selected) {
+                true -> TodoItemState.COMPLETED
+                false -> TodoItemState.ACTIVE
+            }
+            emitter.onNext(TodoListIntent.ChangeItemStatus(serverId, state))
+        }
+    }
+
     override fun render(state: TodoListViewState) {
         adapter.items = state.items
-        adapter.notifyDataSetChanged()
+        state.error?.printStackTrace()
     }
 }

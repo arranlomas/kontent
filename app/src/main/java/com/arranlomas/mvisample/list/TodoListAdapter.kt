@@ -13,10 +13,12 @@ import kotlinx.android.synthetic.main.li_todo_item.view.*
  * Created by arran on 21/12/2017.
  */
 class TodoListAdapter : RecyclerView.Adapter<TodoListViewHolder>() {
+    lateinit var onItemSelected: (Long, Boolean) -> Unit
     var items = emptyList<TodoItem>()
 
     override fun onBindViewHolder(holder: TodoListViewHolder, position: Int) {
         holder.bind(items[position])
+        holder.onItemSelected = onItemSelected
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TodoListViewHolder {
@@ -29,12 +31,16 @@ class TodoListAdapter : RecyclerView.Adapter<TodoListViewHolder>() {
 }
 
 class TodoListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
+    var onItemSelected: ((Long, Boolean) -> Unit)? = null
     fun bind(item: TodoItem) {
         itemView.todoTitle.text = item.title
         when (item.state) {
-            TodoItemState.ACTIVE -> itemView.todoCheckbox.isSelected = false
-            TodoItemState.COMPLETED -> itemView.todoCheckbox.isSelected = true
+            TodoItemState.ACTIVE -> itemView.todoCheckbox.isChecked = false
+            TodoItemState.COMPLETED -> itemView.todoCheckbox.isChecked = true
+        }
+
+        itemView.todoCheckbox.setOnCheckedChangeListener { compoundButton, b ->
+            onItemSelected?.invoke(item.serverId, b)
         }
     }
 

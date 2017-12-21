@@ -1,6 +1,7 @@
 package com.arranlomas.kontent.commons
 
 import io.reactivex.Observable
+import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 
 /**
@@ -8,8 +9,8 @@ import io.reactivex.subjects.PublishSubject
  */
 open class KontentInteractor<S : KontentContract.ViewState, E : KontentContract.Intent> : KontentContract.Interactor<S, E> {
 
-    val intentsSubject: PublishSubject<E> = PublishSubject.create()
-    val stateSubject: PublishSubject<S> = PublishSubject.create()
+    val intentsSubject: BehaviorSubject<E> = BehaviorSubject.create()
+    val stateSubject: BehaviorSubject<S> = BehaviorSubject.create()
 
     lateinit var processStream: (E) -> Observable<S>
     lateinit var processor: (Observable<E>) -> Observable<S>
