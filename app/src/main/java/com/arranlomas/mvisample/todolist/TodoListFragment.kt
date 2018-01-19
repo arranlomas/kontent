@@ -1,4 +1,4 @@
-package com.arranlomas.mvisample.list
+package com.arranlomas.mvisample.todolist
 
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
@@ -7,16 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import com.arranlomas.kontent.commons.KontentFragment
 import com.arranlomas.mvisample.R
-import com.arranlomas.mvisample.list.objects.TodoListIntent
-import com.arranlomas.mvisample.list.objects.TodoListViewState
+import com.arranlomas.mvisample.todolist.objects.TodoListIntent
+import com.arranlomas.mvisample.todolist.objects.TodoListViewState
 import com.arranlomas.mvisample.models.TodoItemState
 import com.arranlomas.mvisample.repository.ListItemRepository
 import io.reactivex.Observable
 import kotlinx.android.synthetic.main.fragment_list.*
 
-/**
- * Created by arran on 4/12/2017.
- */
 internal class TodoListFragment : KontentFragment<TodoListViewState, TodoListIntent>() {
 
     var interactor: TodoListContract.Interactor

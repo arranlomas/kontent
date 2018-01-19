@@ -1,7 +1,7 @@
-package com.arranlomas.mvisample.list.functions
+package com.arranlomas.mvisample.todolist.functions
 
-import com.arranlomas.mvisample.list.objects.TodoListAction
-import com.arranlomas.mvisample.list.objects.TodoListIntent
+import com.arranlomas.mvisample.todolist.objects.TodoListAction
+import com.arranlomas.mvisample.todolist.objects.TodoListIntent
 
 /**
  * Created by arran on 5/12/2017.

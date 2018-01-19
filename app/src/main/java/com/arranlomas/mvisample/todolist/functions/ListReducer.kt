@@ -1,7 +1,7 @@
-package com.arranlomas.mvisample.list.functions
+package com.arranlomas.mvisample.todolist.functions
 
-import com.arranlomas.mvisample.list.objects.TodoListResult
-import com.arranlomas.mvisample.list.objects.TodoListViewState
+import com.arranlomas.mvisample.todolist.objects.TodoListResult
+import com.arranlomas.mvisample.todolist.objects.TodoListViewState
 import io.reactivex.functions.BiFunction
 
 /**

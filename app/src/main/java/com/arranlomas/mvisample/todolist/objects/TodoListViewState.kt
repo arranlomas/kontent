@@ -1,6 +1,6 @@
-package com.arranlomas.mvisample.list.objects
+package com.arranlomas.mvisample.todolist.objects
 
-import com.arranlomas.kontent.commons.KontentContract
+import com.arranlomas.kontent.commons.KontentViewState
 import com.arranlomas.mvisample.models.TodoItem
 
 /**
@@ -10,7 +10,7 @@ internal data class TodoListViewState(
         val items: List<TodoItem> = emptyList(),
         val loading: Boolean = false,
         val error: Throwable? = null
-) : KontentContract.ViewState {
+) : KontentViewState() {
     companion object Factory {
         fun default(): TodoListViewState {
             return TodoListViewState()
