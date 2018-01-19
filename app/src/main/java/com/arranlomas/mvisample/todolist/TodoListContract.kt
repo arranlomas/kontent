@@ -1,6 +1,6 @@
 package com.arranlomas.mvisample.todolist
 
-import com.arranlomas.kontent.commons.KontentContract
+import com.arranlomas.kontent.commons.objects.mvi.KontentContract
 import com.arranlomas.mvisample.todolist.objects.TodoListIntent
 import com.arranlomas.mvisample.todolist.objects.TodoListViewState
 

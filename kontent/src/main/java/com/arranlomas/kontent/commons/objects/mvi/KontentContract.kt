@@ -1,4 +1,4 @@
-package com.arranlomas.kontent.commons
+package com.arranlomas.kontent.commons.objects.mvi
 
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
@@ -8,12 +8,12 @@ import io.reactivex.disposables.CompositeDisposable
  */
 interface KontentContract {
 
-    interface View<S : KontentContract.ViewState, E : KontentContract.Intent> {
+    interface View<S : ViewState, E : Intent> {
         val subscriptions: CompositeDisposable
         var intents: Observable<E>
         var onErrorAction: ((Throwable) -> Unit)?
-        fun setup(interactor: KontentContract.Interactor<S, E>, onErrorAction: ((Throwable) -> Unit)? = null)
-        fun setup(interactor: KontentContract.Interactor<S, E>)
+        fun setup(interactor: Interactor<S, E>, onErrorAction: ((Throwable) -> Unit)? = null)
+        fun setup(interactor: Interactor<S, E>)
 
         fun attachIntents(intents: Observable<E>)
 

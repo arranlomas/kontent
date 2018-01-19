@@ -1,8 +1,7 @@
-package com.arranlomas.kontent.commons
+package com.arranlomas.kontent.commons.objects.mvi
 
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
-import io.reactivex.subjects.PublishSubject
 
 /**
  * Created by arran on 4/12/2017.

@@ -1,6 +1,6 @@
 package com.arranlomas.mvisample.todolist.objects
 
-import com.arranlomas.kontent.commons.KontentAction
+import com.arranlomas.kontent.commons.objects.mvi.KontentAction
 import com.arranlomas.mvisample.models.TodoItemState
 
 /**

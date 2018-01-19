@@ -1,6 +1,6 @@
 package com.arranlomas.mvisample.todolist.objects
 
-import com.arranlomas.kontent.commons.KontentResult
+import com.arranlomas.kontent.commons.objects.mvi.KontentResult
 import com.arranlomas.mvisample.models.TodoItem
 
 /**

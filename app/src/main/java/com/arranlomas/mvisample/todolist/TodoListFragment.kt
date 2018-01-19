@@ -5,7 +5,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.arranlomas.kontent.commons.KontentFragment
+import com.arranlomas.kontent.commons.objects.android.KontentFragment
 import com.arranlomas.mvisample.R
 import com.arranlomas.mvisample.todolist.objects.TodoListIntent
 import com.arranlomas.mvisample.todolist.objects.TodoListViewState

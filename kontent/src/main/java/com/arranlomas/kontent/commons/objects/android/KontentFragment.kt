@@ -1,15 +1,13 @@
-package com.arranlomas.kontent.commons
+package com.arranlomas.kontent.commons.objects.android
 
-import android.support.v7.app.AppCompatActivity
+import android.support.v4.app.Fragment
+import com.arranlomas.kontent.commons.objects.mvi.KontentContract
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.observers.DisposableObserver
 
-/**
- * Created by arran on 17/12/2017.
- */
-abstract class KontentActivity<S : KontentContract.ViewState, E : KontentContract.Intent> : KontentContract.View<S, E>, AppCompatActivity() {
+abstract class KontentFragment<S : KontentContract.ViewState, E : KontentContract.Intent> : KontentContract.View<S, E>, Fragment() {
 
     override val subscriptions = CompositeDisposable()
     private lateinit var interactor: KontentContract.Interactor<S, E>
