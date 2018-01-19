@@ -1,4 +1,4 @@
-package com.arranlomas.mvisample.todolist
+package com.arranlomas.mvisample.ui.todolist
 
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
@@ -7,8 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import com.arranlomas.kontent.commons.objects.android.KontentFragment
 import com.arranlomas.mvisample.R
-import com.arranlomas.mvisample.todolist.objects.TodoListIntent
-import com.arranlomas.mvisample.todolist.objects.TodoListViewState
+import com.arranlomas.mvisample.ui.todolist.objects.TodoListIntent
+import com.arranlomas.mvisample.ui.todolist.objects.TodoListViewState
 import com.arranlomas.mvisample.models.TodoItemState
 import com.arranlomas.mvisample.repository.ListItemRepository
 import io.reactivex.Observable

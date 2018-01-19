@@ -1,11 +1,11 @@
-package com.arranlomas.mvisample.todolist
+package com.arranlomas.mvisample.ui.todolist
 
 import com.arranlomas.kontent.commons.objects.mvi.KontentInteractor
-import com.arranlomas.mvisample.todolist.functions.listActionProcessor
-import com.arranlomas.mvisample.todolist.functions.listIntentToAction
-import com.arranlomas.mvisample.todolist.functions.listReducer
-import com.arranlomas.mvisample.todolist.objects.TodoListIntent
-import com.arranlomas.mvisample.todolist.objects.TodoListViewState
+import com.arranlomas.mvisample.ui.todolist.functions.listActionProcessor
+import com.arranlomas.mvisample.ui.todolist.functions.listIntentToAction
+import com.arranlomas.mvisample.ui.todolist.functions.listReducer
+import com.arranlomas.mvisample.ui.todolist.objects.TodoListIntent
+import com.arranlomas.mvisample.ui.todolist.objects.TodoListViewState
 import com.arranlomas.mvisample.repository.IListItemRepository
 
 /**

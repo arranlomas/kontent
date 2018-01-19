@@ -2,7 +2,7 @@ package com.arranlomas.mvisample
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import com.arranlomas.mvisample.todolist.TodoListFragment
+import com.arranlomas.mvisample.ui.todolist.TodoListFragment
 import com.arranlomas.mvisample.utils.showFragment
 import kotlinx.android.synthetic.main.activity_main.*
 

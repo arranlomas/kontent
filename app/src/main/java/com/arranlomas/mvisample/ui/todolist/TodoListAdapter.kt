@@ -1,4 +1,4 @@
-package com.arranlomas.mvisample.todolist
+package com.arranlomas.mvisample.ui.todolist
 
 import android.support.v7.widget.RecyclerView
 import android.view.View

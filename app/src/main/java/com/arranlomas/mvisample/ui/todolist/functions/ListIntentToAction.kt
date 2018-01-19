@@ -1,11 +1,7 @@
-package com.arranlomas.mvisample.todolist.functions
+package com.arranlomas.mvisample.ui.todolist.functions
 
-import com.arranlomas.mvisample.todolist.objects.TodoListAction
-import com.arranlomas.mvisample.todolist.objects.TodoListIntent
-
-/**
- * Created by arran on 5/12/2017.
- */
+import com.arranlomas.mvisample.ui.todolist.objects.TodoListAction
+import com.arranlomas.mvisample.ui.todolist.objects.TodoListIntent
 
 internal fun listIntentToAction(intent: TodoListIntent): TodoListAction = when (intent) {
     is TodoListIntent.LoadTodoListItems -> TodoListAction.LoadItems()

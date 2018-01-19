@@ -1,11 +1,11 @@
-package com.arranlomas.mvisample.todolist.functions
+package com.arranlomas.mvisample.ui.todolist.functions
 
 import com.arranlomas.kontent.commons.functions.KontentActionToResultProcessor
 import com.arranlomas.kontent.commons.functions.KontentSimpleNetworkRequestProcessor
 import com.arranlomas.mvisample.models.TodoItem
 import com.arranlomas.mvisample.repository.IListItemRepository
-import com.arranlomas.mvisample.todolist.objects.TodoListAction
-import com.arranlomas.mvisample.todolist.objects.TodoListResult
+import com.arranlomas.mvisample.ui.todolist.objects.TodoListAction
+import com.arranlomas.mvisample.ui.todolist.objects.TodoListResult
 import io.reactivex.Observable
 
 /**
