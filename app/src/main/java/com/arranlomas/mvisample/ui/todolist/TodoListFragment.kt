@@ -6,28 +6,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.afollestad.materialdialogs.MaterialDialog
-import com.arranlomas.kontent.commons.objects.android.KontentFragment
 import com.arranlomas.mvisample.R
 import com.arranlomas.mvisample.models.TodoItemState
-import com.arranlomas.mvisample.repository.ListItemRepository
 import com.arranlomas.mvisample.ui.todolist.objects.TodoListIntent
 import com.arranlomas.mvisample.ui.todolist.objects.TodoListViewState
+import com.arranlomas.mvisample.utils.DaggerKontentFragment
 import com.jakewharton.rxbinding2.view.RxView
-import dagger.android.support.DaggerAppCompatActivity
 import io.reactivex.Observable
 import kotlinx.android.synthetic.main.fragment_list.*
+import javax.inject.Inject
 
-class TodoListFragment : KontentFragment<TodoListIntent, TodoListViewState>() {
+class TodoListFragment : DaggerKontentFragment<TodoListIntent, TodoListViewState>() {
 
-    var interactor: TodoListContract.Interactor
-    val adapter = TodoListAdapter()
-
-    init {
-        //TODO do this with dagger
-        val authRepository = ListItemRepository()
-        this.interactor = TodoListInteractor(authRepository)
-        super.setup(interactor, { it.printStackTrace() })
-    }
+    @Inject
+    lateinit var interactor: TodoListContract.Interactor
+    private val adapter = TodoListAdapter()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_list, container, false)
@@ -35,6 +28,7 @@ class TodoListFragment : KontentFragment<TodoListIntent, TodoListViewState>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        super.setup(interactor, { it.printStackTrace() })
         super.attachIntents(intents())
 
         todoRecyclerView.hasFixedSize()

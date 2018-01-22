@@ -1,10 +1,8 @@
 package com.arranlomas.mvisample
 
+import com.arranlomas.mvisample.di.DaggerAppComponent
 import dagger.android.AndroidInjector
 import dagger.android.DaggerApplication
-import com.arranlomas.mvisample.di.DaggerAppComponent
-import com.arranlomas.mvisample.di.AppComponent
-
 
 class MainApplication : DaggerApplication() {
 

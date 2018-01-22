@@ -1,15 +1,15 @@
-package com.arranlomas.kontent.commons.objects.android
+package com.arranlomas.mvisample.utils
 
-import android.support.v4.app.Fragment
 import com.arranlomas.kontent.commons.objects.mvi.KontentContract
 import com.arranlomas.kontent.commons.objects.mvi.KontentIntent
 import com.arranlomas.kontent.commons.objects.mvi.KontentViewState
+import dagger.android.support.DaggerFragment
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.observers.DisposableObserver
 
-abstract class KontentFragment<I : KontentIntent, S : KontentViewState> : KontentContract.View<I, S>, Fragment() {
+abstract class DaggerKontentFragment<I : KontentIntent, S : KontentViewState> : KontentContract.View<I, S>, DaggerFragment() {
 
     override val subscriptions = CompositeDisposable()
     private lateinit var interactor: KontentContract.Interactor<I, S>
