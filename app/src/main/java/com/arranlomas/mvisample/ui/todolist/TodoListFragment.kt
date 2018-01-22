@@ -6,11 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.afollestad.materialdialogs.MaterialDialog
+import com.arranlomas.daggerkontent.DaggerKontentFragment
 import com.arranlomas.mvisample.R
 import com.arranlomas.mvisample.models.TodoItemState
 import com.arranlomas.mvisample.ui.todolist.objects.TodoListIntent
 import com.arranlomas.mvisample.ui.todolist.objects.TodoListViewState
-import com.arranlomas.mvisample.utils.DaggerKontentFragment
 import com.jakewharton.rxbinding2.view.RxView
 import io.reactivex.Observable
 import kotlinx.android.synthetic.main.fragment_list.*

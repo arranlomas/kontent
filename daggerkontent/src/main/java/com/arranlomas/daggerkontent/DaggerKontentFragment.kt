@@ -1,4 +1,4 @@
-package com.arranlomas.mvisample.utils
+package com.arranlomas.daggerkontent
 
 import com.arranlomas.kontent.commons.objects.mvi.KontentContract
 import com.arranlomas.kontent.commons.objects.mvi.KontentIntent

@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://D:\AndroidStudioProjects\kontent\MviSample.iml" filepath="D:\AndroidStudioProjects\kontent\MviSample.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/daggerkontent/daggerkontent.iml" filepath="$PROJECT_DIR$/daggerkontent/daggerkontent.iml" />
       <module fileurl="file://$PROJECT_DIR$/kontent.iml" filepath="$PROJECT_DIR$/kontent.iml" />
       <module fileurl="file://D:\AndroidStudioProjects\kontent\kontent\kontent.iml" filepath="D:\AndroidStudioProjects\kontent\kontent\kontent.iml" />
       <module fileurl="file://$PROJECT_DIR$/kontent/kontent-kontent.iml" filepath="$PROJECT_DIR$/kontent/kontent-kontent.iml" />
