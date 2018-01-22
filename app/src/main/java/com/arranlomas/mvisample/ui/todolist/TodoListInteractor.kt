@@ -11,7 +11,7 @@ import com.arranlomas.mvisample.repository.IListItemRepository
 /**
  * Created by arran on 5/12/2017.
  */
-internal class TodoListInteractor(val listItemRepository: IListItemRepository) : TodoListContract.Interactor, KontentInteractor<TodoListViewState, TodoListIntent>() {
+internal class TodoListInteractor(private val listItemRepository: IListItemRepository) : TodoListContract.Interactor, KontentInteractor<TodoListViewState, TodoListIntent>() {
     init {
         super.processor = { intents ->
             intents

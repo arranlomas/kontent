@@ -14,7 +14,8 @@ import io.reactivex.Observable
 internal fun listActionProcessor(listItemRepository: IListItemRepository) = KontentActionToResultProcessor<TodoListAction, TodoListResult> { actionObservable ->
     Observable.merge(
             actionObservable.ofType(TodoListAction.LoadItems::class.java).compose(loadItemsLoadProcessor(listItemRepository)),
-            actionObservable.ofType(TodoListAction.ChangeItemStatus::class.java).compose(changeItemStatusProcessor(listItemRepository))
+            actionObservable.ofType(TodoListAction.ChangeItemStatus::class.java).compose(changeItemStatusProcessor(listItemRepository)),
+            actionObservable.ofType(TodoListAction.AddItem::class.java).compose(addItemProcessor(listItemRepository))
     )
 }
 
@@ -27,6 +28,15 @@ private fun loadItemsLoadProcessor(listItemRepository: IListItemRepository) = Ko
 private fun changeItemStatusProcessor(listItemRepository: IListItemRepository) = KontentSimpleNetworkRequestProcessor<TodoListAction.ChangeItemStatus, TodoListResult, List<TodoItem>>(
         networkRequest = { action ->
             listItemRepository.changeItemState(action.itemId, action.itemStatus)
+                    .flatMap { listItemRepository.getListItems() }
+        },
+        success = { TodoListResult.ListLoadSuccess(it) },
+        error = { TodoListResult.Error(it) },
+        loading = TodoListResult.ListLoadInflight())
+
+private fun addItemProcessor(listItemRepository: IListItemRepository) = KontentSimpleNetworkRequestProcessor<TodoListAction.AddItem, TodoListResult, List<TodoItem>>(
+        networkRequest = { action ->
+            listItemRepository.addItem(action.title, action.description)
                     .flatMap { listItemRepository.getListItems() }
         },
         success = { TodoListResult.ListLoadSuccess(it) },

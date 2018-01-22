@@ -5,6 +5,7 @@ import com.arranlomas.mvisample.models.TodoItemState
 import io.reactivex.Observable
 
 internal class ListItemRepository : IListItemRepository {
+
     private val items = mutableListOf<MutableTodoItem>()
 
     init {
@@ -14,28 +15,33 @@ internal class ListItemRepository : IListItemRepository {
     }
 
     override fun getListItems(): Observable<List<TodoItem>> {
-        return Observable.just(items.mapToImutable())
+        return Observable.just(items.mapToMutable())
     }
 
     override fun changeItemState(itemId: Long, itemState: TodoItemState): Observable<TodoItem> {
         items.forEach {
             if (it.serverId == itemId) {
                 it.state = itemState
-                return Observable.just(it.mapToImutable())
+                return Observable.just(it.mapToMutable())
             }
         }
         return Observable.error { Throwable("No Item Found") }
     }
+
+    override fun addItem(title: String, description: String): Observable<Boolean> {
+        items.add(MutableTodoItem((items.size+1).toLong(), TodoItemState.ACTIVE, title, description))
+        return Observable.just(true)
+    }
 }
 
-private fun MutableTodoItem.mapToImutable(): TodoItem{
+private fun MutableTodoItem.mapToMutable(): TodoItem{
     return TodoItem(serverId, state, title, description)
 }
 
-private fun MutableList<MutableTodoItem>.mapToImutable(): List<TodoItem>{
+private fun MutableList<MutableTodoItem>.mapToMutable(): List<TodoItem>{
     val result = mutableListOf<TodoItem>()
     forEach {
-        result.add(it.mapToImutable())
+        result.add(it.mapToMutable())
     }
     return result
 }

@@ -5,13 +5,17 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.afollestad.materialdialogs.MaterialDialog
 import com.arranlomas.kontent.commons.objects.android.KontentFragment
 import com.arranlomas.mvisample.R
 import com.arranlomas.mvisample.ui.todolist.objects.TodoListIntent
 import com.arranlomas.mvisample.ui.todolist.objects.TodoListViewState
 import com.arranlomas.mvisample.models.TodoItemState
 import com.arranlomas.mvisample.repository.ListItemRepository
+import com.jakewharton.rxbinding2.view.RxView
+import io.reactivex.Emitter
 import io.reactivex.Observable
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_list.*
 
 internal class TodoListFragment : KontentFragment<TodoListViewState, TodoListIntent>() {
@@ -43,10 +47,27 @@ internal class TodoListFragment : KontentFragment<TodoListViewState, TodoListInt
         todoRecyclerView.adapter = adapter
     }
 
+    fun showAddTodoItemDialog(): Observable<TodoListIntent.AddItem> {
+        return Observable.create { emitter ->
+            context?.let {
+                MaterialDialog.Builder(it)
+                        .title("Add Item")
+                        .content("Enter todo item details here")
+                        .negativeText("cancel")
+                        .positiveText("Add")
+                        .onPositive { dialog, which ->
+                            emitter.onNext(TodoListIntent.AddItem("test title", "test description"))
+                        }
+                        .show()
+            }
+        }
+    }
+
     fun intents(): Observable<TodoListIntent> {
         return Observable.merge(
                 initialIntent(),
-                adapterIntent())
+                adapterIntent(),
+                addTodoItemIntent())
     }
 
     fun initialIntent(): Observable<TodoListIntent> = Observable.just(TodoListIntent.LoadTodoListItems())
@@ -61,8 +82,13 @@ internal class TodoListFragment : KontentFragment<TodoListViewState, TodoListInt
         }
     }
 
+    fun addTodoItemIntent(): Observable<TodoListIntent> = RxView.clicks(addTodoFab).flatMap {
+        showAddTodoItemDialog()
+    }
+
     override fun render(state: TodoListViewState) {
         adapter.items = state.items
+        adapter.notifyDataSetChanged()
         state.error?.printStackTrace()
     }
 }

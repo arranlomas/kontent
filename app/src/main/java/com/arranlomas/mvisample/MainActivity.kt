@@ -14,10 +14,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        showFragment(TodoListFragment(), R.id.mainContent)
-
-        addTodoFab.setOnClickListener {
-
-        }
+        val frag = TodoListFragment()
+        showFragment(frag, R.id.mainContent)
     }
 }

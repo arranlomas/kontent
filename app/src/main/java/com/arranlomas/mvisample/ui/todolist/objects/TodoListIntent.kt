@@ -9,4 +9,5 @@ import com.arranlomas.mvisample.models.TodoItemState
 internal sealed class TodoListIntent : KontentIntent() {
     class LoadTodoListItems : TodoListIntent()
     data class ChangeItemStatus(val itemId: Long, val itemStatus: TodoItemState) : TodoListIntent()
+    data class AddItem(val title: String, val description: String): TodoListIntent()
 }
