@@ -6,27 +6,27 @@ import com.arranlomas.kontent.extensions.composeIo
 import io.reactivex.Observable
 import io.reactivex.ObservableTransformer
 
-fun <T : KontentAction, R : KontentResult> KontentActionToResultProcessor(mapFunction: (Observable<T>) -> Observable<R>): ObservableTransformer<T, R> =
+fun <T : KontentAction, R : KontentResult> KontentProcessor(mapFunction: (Observable<T>) -> Observable<R>): ObservableTransformer<T, R> =
         ObservableTransformer { action: Observable<T> ->
             action.publish { shared ->
                 mapFunction.invoke(shared)
             }
         }
 
-fun <T : KontentAction, R : KontentResult> KontentSimpleProcessor(mapFunction: (T) -> Observable<R>): ObservableTransformer<T, R> = ObservableTransformer { action ->
+fun <T : KontentAction, R : KontentResult> KontentSimpleActionProcessor(mapFunction: (T) -> Observable<R>): ObservableTransformer<T, R> = ObservableTransformer { action ->
     action.switchMap { action ->
         mapFunction.invoke(action)
     }
 }
 
-fun <T : KontentAction, R : KontentResult, O> KontentSimpleNetworkProcessor(
-        networkRequest: (T) -> Observable<O>,
+fun <T : KontentAction, R : KontentResult, O> KontentActionProcessor(
+        action: (T) -> Observable<O>,
         success: (O) -> R,
         error: (Throwable) -> R,
         loading: R
 ): ObservableTransformer<T, R> = ObservableTransformer { actionObservable ->
-    actionObservable.switchMap { action ->
-        networkRequest.invoke(action)
+    actionObservable.switchMap { mviAction ->
+        action.invoke(mviAction)
                 .networkMapper(success, error, loading)
     }
 }
