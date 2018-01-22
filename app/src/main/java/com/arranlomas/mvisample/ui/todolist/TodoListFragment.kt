@@ -19,17 +19,13 @@ import kotlinx.android.synthetic.main.fragment_list.*
 internal class TodoListFragment : KontentFragment<TodoListIntent, TodoListViewState>() {
 
     var interactor: TodoListContract.Interactor
-
     val adapter = TodoListAdapter()
 
     init {
         //TODO do this with dagger
         val authRepository = ListItemRepository()
         this.interactor = TodoListInteractor(authRepository)
-        super.setup(interactor, {
-            it.printStackTrace()
-            throw it
-        })
+        super.setup(interactor, { it.printStackTrace() })
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
