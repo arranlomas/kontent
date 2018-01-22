@@ -4,7 +4,7 @@ import com.arranlomas.mvisample.models.TodoItem
 import com.arranlomas.mvisample.models.TodoItemState
 import io.reactivex.Observable
 
-internal class ListItemRepository : IListItemRepository {
+class ListItemRepository : IListItemRepository {
 
     private val items = mutableListOf<MutableTodoItem>()
 

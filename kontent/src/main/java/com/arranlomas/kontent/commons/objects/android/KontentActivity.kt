@@ -9,9 +9,6 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.observers.DisposableObserver
 
-/**
- * Created by arran on 17/12/2017.
- */
 abstract class KontentActivity<I : KontentIntent, S : KontentViewState> : KontentContract.View<I, S>, AppCompatActivity() {
 
     override val subscriptions = CompositeDisposable()

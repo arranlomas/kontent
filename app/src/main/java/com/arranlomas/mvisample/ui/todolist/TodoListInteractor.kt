@@ -10,7 +10,7 @@ import com.arranlomas.mvisample.ui.todolist.objects.TodoListIntent
 import com.arranlomas.mvisample.ui.todolist.objects.TodoListResult
 import com.arranlomas.mvisample.ui.todolist.objects.TodoListViewState
 
-internal class TodoListInteractor(listItemRepository: IListItemRepository) :
+class TodoListInteractor(listItemRepository: IListItemRepository) :
         TodoListContract.Interactor, KontentInteractor<TodoListIntent, TodoListAction, TodoListResult, TodoListViewState>(
         intentToAction = { intent -> listIntentToAction(intent) },
         actionProcessor = listActionProcessor(listItemRepository),

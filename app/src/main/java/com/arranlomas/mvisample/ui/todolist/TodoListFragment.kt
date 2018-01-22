@@ -13,10 +13,11 @@ import com.arranlomas.mvisample.repository.ListItemRepository
 import com.arranlomas.mvisample.ui.todolist.objects.TodoListIntent
 import com.arranlomas.mvisample.ui.todolist.objects.TodoListViewState
 import com.jakewharton.rxbinding2.view.RxView
+import dagger.android.support.DaggerAppCompatActivity
 import io.reactivex.Observable
 import kotlinx.android.synthetic.main.fragment_list.*
 
-internal class TodoListFragment : KontentFragment<TodoListIntent, TodoListViewState>() {
+class TodoListFragment : KontentFragment<TodoListIntent, TodoListViewState>() {
 
     var interactor: TodoListContract.Interactor
     val adapter = TodoListAdapter()

@@ -11,7 +11,7 @@ import io.reactivex.Observable
 /**
  * TODO - extract this to a base component that only compiles if all actions are covered like a when
  */
-internal fun listActionProcessor(listItemRepository: IListItemRepository) = KontentProcessor<TodoListAction, TodoListResult> { actionObservable ->
+fun listActionProcessor(listItemRepository: IListItemRepository) = KontentProcessor<TodoListAction, TodoListResult> { actionObservable ->
     Observable.merge(
             actionObservable.ofType(TodoListAction.LoadItems::class.java).compose(loadItemsLoadProcessor(listItemRepository)),
             actionObservable.ofType(TodoListAction.ChangeItemStatus::class.java).compose(changeItemStatusProcessor(listItemRepository)),
