@@ -1,7 +1,7 @@
 package com.arranlomas.mvisample.ui.todolist.functions
 
 import com.arranlomas.kontent.commons.functions.KontentActionToResultProcessor
-import com.arranlomas.kontent.commons.functions.KontentSimpleNetworkRequestProcessor
+import com.arranlomas.kontent.commons.functions.KontentSimpleNetworkProcessor
 import com.arranlomas.mvisample.models.TodoItem
 import com.arranlomas.mvisample.repository.IListItemRepository
 import com.arranlomas.mvisample.ui.todolist.objects.TodoListAction
@@ -19,13 +19,13 @@ internal fun listActionProcessor(listItemRepository: IListItemRepository) = Kont
     )
 }
 
-private fun loadItemsLoadProcessor(listItemRepository: IListItemRepository) = KontentSimpleNetworkRequestProcessor<TodoListAction.LoadItems, TodoListResult, List<TodoItem>>(
+private fun loadItemsLoadProcessor(listItemRepository: IListItemRepository) = KontentSimpleNetworkProcessor<TodoListAction.LoadItems, TodoListResult, List<TodoItem>>(
         networkRequest = { listItemRepository.getListItems() },
         success = { TodoListResult.ListLoadSuccess(it) },
         error = { TodoListResult.Error(it) },
         loading = TodoListResult.ListLoadInflight())
 
-private fun changeItemStatusProcessor(listItemRepository: IListItemRepository) = KontentSimpleNetworkRequestProcessor<TodoListAction.ChangeItemStatus, TodoListResult, List<TodoItem>>(
+private fun changeItemStatusProcessor(listItemRepository: IListItemRepository) = KontentSimpleNetworkProcessor<TodoListAction.ChangeItemStatus, TodoListResult, List<TodoItem>>(
         networkRequest = { action ->
             listItemRepository.changeItemState(action.itemId, action.itemStatus)
                     .flatMap { listItemRepository.getListItems() }
@@ -34,7 +34,7 @@ private fun changeItemStatusProcessor(listItemRepository: IListItemRepository) =
         error = { TodoListResult.Error(it) },
         loading = TodoListResult.ListLoadInflight())
 
-private fun addItemProcessor(listItemRepository: IListItemRepository) = KontentSimpleNetworkRequestProcessor<TodoListAction.AddItem, TodoListResult, List<TodoItem>>(
+private fun addItemProcessor(listItemRepository: IListItemRepository) = KontentSimpleNetworkProcessor<TodoListAction.AddItem, TodoListResult, List<TodoItem>>(
         networkRequest = { action ->
             listItemRepository.addItem(action.title, action.description)
                     .flatMap { listItemRepository.getListItems() }

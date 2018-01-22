@@ -16,14 +16,14 @@ import com.jakewharton.rxbinding2.view.RxView
 import io.reactivex.Observable
 import kotlinx.android.synthetic.main.fragment_list.*
 
-internal class TodoListFragment : KontentFragment<TodoListViewState, TodoListIntent>() {
+internal class TodoListFragment : KontentFragment<TodoListIntent, TodoListViewState>() {
 
     var interactor: TodoListContract.Interactor
 
     val adapter = TodoListAdapter()
 
     init {
-        //this step would preferbly be done via dagger ot dependency injects, and the interactor would just be initejected as an interface, this step is vital for testing
+        //TODO do this with dagger
         val authRepository = ListItemRepository()
         this.interactor = TodoListInteractor(authRepository)
         super.setup(interactor, {
@@ -45,16 +45,16 @@ internal class TodoListFragment : KontentFragment<TodoListViewState, TodoListInt
         todoRecyclerView.adapter = adapter
     }
 
-    fun intents(): Observable<TodoListIntent> {
+    private fun intents(): Observable<TodoListIntent> {
         return Observable.merge(
                 initialIntent(),
                 adapterIntent(),
                 addTodoItemIntent())
     }
 
-    fun initialIntent(): Observable<TodoListIntent> = Observable.just(TodoListIntent.LoadTodoListItems())
+    private fun initialIntent(): Observable<TodoListIntent> = Observable.just(TodoListIntent.LoadTodoListItems())
 
-    fun adapterIntent(): Observable<TodoListIntent> = Observable.create { emitter ->
+    private fun adapterIntent(): Observable<TodoListIntent> = Observable.create { emitter ->
         adapter.onItemSelected = { serverId, selected ->
             val state = when (selected) {
                 true -> TodoItemState.COMPLETED
@@ -64,21 +64,22 @@ internal class TodoListFragment : KontentFragment<TodoListViewState, TodoListInt
         }
     }
 
-    fun addTodoItemIntent(): Observable<TodoListIntent> = RxView.clicks(addTodoFab).flatMap {
-        Observable.create<TodoListIntent> { emitter ->
-            context?.let {
-                MaterialDialog.Builder(it)
-                        .title("Add Item")
-                        .content("Enter todo item details here")
-                        .negativeText("cancel")
-                        .positiveText("Add")
-                        .onPositive { _, _ ->
-                            emitter.onNext(TodoListIntent.AddItem("test title", "test description"))
-                        }
-                        .show()
+    private fun addTodoItemIntent(): Observable<TodoListIntent> =
+            RxView.clicks(addTodoFab).flatMap {
+                Observable.create<TodoListIntent> { emitter ->
+                    context?.let {
+                        MaterialDialog.Builder(it)
+                                .title("Add Item")
+                                .content("Enter todo item details here")
+                                .negativeText("cancel")
+                                .positiveText("Add")
+                                .onPositive { _, _ ->
+                                    emitter.onNext(TodoListIntent.AddItem("test title", "test description"))
+                                }
+                                .show()
+                    }
+                }
             }
-        }
-    }
 
     override fun render(state: TodoListViewState) {
         adapter.items = state.items

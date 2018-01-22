@@ -18,29 +18,27 @@ class TodoListAdapter : RecyclerView.Adapter<TodoListViewHolder>() {
 
     override fun onBindViewHolder(holder: TodoListViewHolder, position: Int) {
         holder.bind(items[position])
-        holder.onItemSelected = onItemSelected
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TodoListViewHolder {
         val itemView = parent.context.inflateLayout(R.layout.li_todo_item, parent, false)
-        return TodoListViewHolder(itemView)
+        return TodoListViewHolder(itemView, onItemSelected)
     }
 
     override fun getItemCount(): Int = items.size
 
 }
 
-class TodoListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    var onItemSelected: ((Long, Boolean) -> Unit)? = null
+class TodoListViewHolder(itemView: View, private val onItemSelected: (Long, Boolean) -> Unit) : RecyclerView.ViewHolder(itemView) {
     fun bind(item: TodoItem) {
         itemView.todoTitle.text = item.title
+        itemView.todoCheckbox.setOnCheckedChangeListener(null)
         when (item.state) {
             TodoItemState.ACTIVE -> itemView.todoCheckbox.isChecked = false
             TodoItemState.COMPLETED -> itemView.todoCheckbox.isChecked = true
         }
-
         itemView.todoCheckbox.setOnCheckedChangeListener { compoundButton, b ->
-            onItemSelected?.invoke(item.serverId, b)
+            onItemSelected.invoke(item.serverId, b)
         }
     }
 

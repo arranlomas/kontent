@@ -19,7 +19,7 @@ fun <T : KontentAction, R : KontentResult> KontentSimpleProcessor(mapFunction: (
     }
 }
 
-fun <T : KontentAction, R : KontentResult, O> KontentSimpleNetworkRequestProcessor(
+fun <T : KontentAction, R : KontentResult, O> KontentSimpleNetworkProcessor(
         networkRequest: (T) -> Observable<O>,
         success: (O) -> R,
         error: (Throwable) -> R,
