@@ -47,7 +47,7 @@ abstract class DaggerKontentFragment<I : KontentIntent, S : KontentViewState> : 
 
     abstract inner class BaseSubscriber<T>(val showLoading: Boolean = true) : DisposableObserver<T>() {
         override fun onError(e: Throwable) {
-            onErrorAction
+            onErrorAction?.invoke(e) ?: e.printStackTrace()
         }
 
         override fun onStart() {
