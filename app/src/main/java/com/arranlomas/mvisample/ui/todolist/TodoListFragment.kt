@@ -20,6 +20,7 @@ class TodoListFragment : DaggerKontentFragment<TodoListIntent, TodoListViewState
 
     @Inject
     lateinit var interactor: TodoListContract.Interactor
+
     private val adapter = TodoListAdapter()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

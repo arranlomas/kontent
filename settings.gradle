@@ -1,1 +1,1 @@
-include ':app', ':kontent', ':daggerkontent'
+include ':app', ':kontent-core', ':kontent-dagger'

@@ -42,5 +42,5 @@ dependencies {
     compile "com.google.dagger:dagger-android:2.11"
     compile "com.google.dagger:dagger-android-support:2.11"
 
-    compile project(':kontent')
+    compile project(':kontent-core')
 }

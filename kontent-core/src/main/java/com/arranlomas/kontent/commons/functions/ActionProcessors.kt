@@ -6,13 +6,6 @@ import com.arranlomas.kontent.extensions.composeIo
 import io.reactivex.Observable
 import io.reactivex.ObservableTransformer
 
-fun <T : KontentAction, R : KontentResult> KontentProcessor(mapFunction: (Observable<T>) -> Observable<R>): ObservableTransformer<T, R> =
-        ObservableTransformer { action: Observable<T> ->
-            action.publish { shared ->
-                mapFunction.invoke(shared)
-            }
-        }
-
 fun <T : KontentAction, R : KontentResult> KontentSimpleActionProcessor(mapFunction: (T) -> Observable<R>): ObservableTransformer<T, R> = ObservableTransformer { action ->
     action.switchMap { action ->
         mapFunction.invoke(action)
