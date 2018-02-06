@@ -69,3 +69,13 @@ TODO
 
 ## State
 TODO
+
+## Notes (section for putting random information, will structure better later)
+
+Generics Symbols:
+```
+I : Intent
+A : Action
+R : Result
+S : ViewState
+```
