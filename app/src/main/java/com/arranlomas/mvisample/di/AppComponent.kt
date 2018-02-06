@@ -1,8 +1,9 @@
 package com.arranlomas.mvisample.di
 
-import android.app.Application
 import com.arranlomas.mvisample.MainApplication
-import dagger.BindsInstance
+import com.arranlomas.mvisample.repository.di.RepositoryComponent
+import com.arranlomas.mvisample.ui.MainBuilder
+import com.arranlomas.mvisample.ui.todolist.di.TodoListBuilder
 import dagger.Component
 import dagger.android.AndroidInjector
 import dagger.android.DaggerApplication
@@ -10,18 +11,14 @@ import dagger.android.support.AndroidSupportInjectionModule
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = [(AndroidSupportInjectionModule::class), (AppModule::class), (ActivityBuilder::class)])
+@Component(modules = [
+AndroidSupportInjectionModule::class,
+TodoListBuilder::class,
+MainBuilder::class
+], dependencies = [
+RepositoryComponent::class
+])
 interface AppComponent : AndroidInjector<DaggerApplication> {
 
     fun inject(app: MainApplication)
-
-    override fun inject(instance: DaggerApplication)
-
-    @Component.Builder
-    interface Builder {
-        @BindsInstance
-        fun application(application: Application): Builder
-
-        fun build(): AppComponent
-    }
 }
