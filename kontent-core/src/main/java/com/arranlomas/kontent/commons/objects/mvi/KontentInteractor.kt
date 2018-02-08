@@ -9,7 +9,8 @@ open class KontentInteractor<I : KontentIntent, A : KontentAction, R : KontentRe
         intentToAction: (I) -> A,
         actionProcessor: ObservableTransformer<A, R>,
         defaultState: S,
-        private val reducer: BiFunction<S, R, S>) : KontentContract.Interactor<I, S> {
+        private val reducer: BiFunction<S, R, S>,
+        postProcessor: (Function1<S, S>)? = null) : KontentContract.Interactor<I, S> {
 
     val intentsSubject: BehaviorSubject<I> = BehaviorSubject.create()
     val stateSubject: BehaviorSubject<S> = BehaviorSubject.create()
@@ -28,6 +29,7 @@ open class KontentInteractor<I : KontentIntent, A : KontentAction, R : KontentRe
                     .map { intent -> intentToAction.invoke(intent) }
                     .compose(actionProcessor)
                     .scan(defaultState, reducer)
+                    .map { postProcessor?.invoke(it) ?: it }
         }
     }
 
