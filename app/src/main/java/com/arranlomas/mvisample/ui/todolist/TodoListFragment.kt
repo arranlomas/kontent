@@ -56,22 +56,21 @@ class TodoListFragment : DaggerKontentFragment<TodoListIntent, TodoListViewState
         }
     }
 
-    private fun addTodoItemIntent(): Observable<TodoListIntent> =
-            RxView.clicks(addTodoFab).flatMap {
-                Observable.create<TodoListIntent> { emitter ->
-                    context?.let {
-                        MaterialDialog.Builder(it)
-                                .title("Add Item")
-                                .content("Enter todo item details here")
-                                .negativeText("cancel")
-                                .positiveText("Add")
-                                .onPositive { _, _ ->
-                                    emitter.onNext(TodoListIntent.AddItem("test title", "test description"))
-                                }
-                                .show()
-                    }
-                }
+    private fun addTodoItemIntent(): Observable<TodoListIntent> = RxView.clicks(addTodoFab).flatMap {
+        Observable.create<TodoListIntent> { emitter ->
+            context?.let {
+                MaterialDialog.Builder(it)
+                        .title("Add Item")
+                        .content("Enter todo item details here")
+                        .negativeText("cancel")
+                        .positiveText("Add")
+                        .onPositive { _, _ ->
+                            emitter.onNext(TodoListIntent.AddItem("test title", "test description"))
+                        }
+                        .show()
             }
+        }
+    }
 
     override fun render(state: TodoListViewState) {
         adapter.items = state.items

@@ -9,7 +9,7 @@ open class KontentInteractor<I : KontentIntent, A : KontentAction, R : KontentRe
         intentToAction: (I) -> A,
         actionProcessor: ObservableTransformer<A, R>,
         defaultState: S,
-        reducer: BiFunction<S, R, S>) : KontentContract.Interactor<I, S> {
+        private val reducer: BiFunction<S, R, S>) : KontentContract.Interactor<I, S> {
 
     val intentsSubject: BehaviorSubject<I> = BehaviorSubject.create()
     val stateSubject: BehaviorSubject<S> = BehaviorSubject.create()
@@ -30,4 +30,7 @@ open class KontentInteractor<I : KontentIntent, A : KontentAction, R : KontentRe
                     .scan(defaultState, reducer)
         }
     }
+
+    override fun getLastState(): Observable<S> = Observable.just(stateSubject.value)
+
 }
