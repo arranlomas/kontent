@@ -1,6 +1,5 @@
 package com.arranlomas.kontent.commons.objects.android
 
-import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.arranlomas.kontent.commons.objects.mvi.KontentContract
 import com.arranlomas.kontent.commons.objects.mvi.KontentIntent

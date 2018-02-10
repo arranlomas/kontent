@@ -33,6 +33,6 @@ open class KontentInteractor<I : KontentIntent, A : KontentAction, R : KontentRe
         }
     }
 
-    override fun getLastState(): Observable<S> = Observable.just(stateSubject.value)
+    override fun getLastState(): S =stateSubject.value
 
 }
