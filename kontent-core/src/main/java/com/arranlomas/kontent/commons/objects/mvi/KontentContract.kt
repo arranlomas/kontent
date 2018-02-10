@@ -17,6 +17,5 @@ interface KontentContract {
 
     interface Interactor<I : KontentIntent, S : KontentViewState> {
         fun attachView(intents: Observable<I>): Observable<S>
-        fun getLastState(): S
     }
 }

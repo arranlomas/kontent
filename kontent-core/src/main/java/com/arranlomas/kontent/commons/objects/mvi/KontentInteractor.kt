@@ -32,7 +32,4 @@ open class KontentInteractor<I : KontentIntent, A : KontentAction, R : KontentRe
                     .map { postProcessor?.invoke(it) ?: it }
         }
     }
-
-    override fun getLastState(): S =stateSubject.value
-
 }
