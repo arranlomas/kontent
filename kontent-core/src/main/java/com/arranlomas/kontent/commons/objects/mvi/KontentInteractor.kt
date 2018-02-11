@@ -16,12 +16,15 @@ open class KontentInteractor<I : KontentIntent, A : KontentAction, R : KontentRe
     val stateSubject: BehaviorSubject<S> = BehaviorSubject.create()
 
     private var processor: (Observable<I>) -> Observable<S>
+
     override fun attachView(intents: Observable<I>): Observable<S> {
         intents.subscribe(intentsSubject)
         processor.invoke(intents)
                 .subscribe(stateSubject)
         return stateSubject
     }
+
+    override fun getLastState(): S = stateSubject.value
 
     init {
         this.processor = { intents ->
