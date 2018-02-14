@@ -6,9 +6,6 @@ import io.reactivex.disposables.CompositeDisposable
 interface KontentContract {
 
     interface View<I : KontentIntent, S : KontentViewState> {
-        val subscriptions: CompositeDisposable
-        var intents: Observable<I>
-        var onErrorAction: ((Throwable) -> Unit)?
         fun setup(interactor: Interactor<I, S>, onErrorAction: ((Throwable) -> Unit)? = null)
         fun setup(interactor: Interactor<I, S>)
         fun render(state: S)

@@ -1,5 +1,6 @@
 package com.arranlomas.daggerkontent
 
+import android.annotation.SuppressLint
 import com.arranlomas.kontent.commons.objects.mvi.KontentContract
 import com.arranlomas.kontent.commons.objects.mvi.KontentIntent
 import com.arranlomas.kontent.commons.objects.mvi.KontentViewState
@@ -11,10 +12,10 @@ import io.reactivex.observers.DisposableObserver
 
 abstract class DaggerKontentFragment<I : KontentIntent, S : KontentViewState> : KontentContract.View<I, S>, DaggerFragment() {
 
-    override val subscriptions = CompositeDisposable()
+    private val subscriptions = CompositeDisposable()
     private lateinit var interactor: KontentContract.Interactor<I, S>
-    lateinit override var intents: Observable<I>
-    override var onErrorAction: ((Throwable) -> Unit)? = null
+    private lateinit var intents: Observable<I>
+    private var onErrorAction: ((Throwable) -> Unit)? = null
 
     override fun setup(interactor: KontentContract.Interactor<I, S>, onErrorAction: ((Throwable) -> Unit)?) {
         this.interactor = interactor
@@ -36,6 +37,7 @@ abstract class DaggerKontentFragment<I : KontentIntent, S : KontentViewState> : 
                 .addDisposable()
     }
 
+    @SuppressLint("MissingSuperCall")
     override fun onDestroy() {
         super.onDestroy()
         subscriptions.dispose()
