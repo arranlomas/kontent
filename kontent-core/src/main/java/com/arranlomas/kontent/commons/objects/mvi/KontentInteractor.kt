@@ -24,7 +24,7 @@ open class KontentInteractor<I : KontentIntent, A : KontentAction, R : KontentRe
         return stateSubject
     }
 
-    override fun getLastState(): S = stateSubject.value
+    override fun getLastState(): S? = stateSubject.value
 
     init {
         this.processor = { intents ->
