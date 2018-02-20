@@ -6,6 +6,7 @@
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://D:\AndroidStudioProjects\kontent\kontent-dagger\daggerkontent.iml" filepath="D:\AndroidStudioProjects\kontent\kontent-dagger\daggerkontent.iml" />
       <module fileurl="file://$PROJECT_DIR$/kontent.iml" filepath="$PROJECT_DIR$/kontent.iml" />
+      <module fileurl="file://$PROJECT_DIR$/kontent-android-viewmodel/kontent-android-viewmodel.iml" filepath="$PROJECT_DIR$/kontent-android-viewmodel/kontent-android-viewmodel.iml" />
       <module fileurl="file://$PROJECT_DIR$/kontent-core/kontent-core.iml" filepath="$PROJECT_DIR$/kontent-core/kontent-core.iml" />
       <module fileurl="file://$PROJECT_DIR$/kontent-dagger/kontent-dagger.iml" filepath="$PROJECT_DIR$/kontent-dagger/kontent-dagger.iml" />
       <module fileurl="file://D:\AndroidStudioProjects\kontent\kontent-core\kontent-kontent.iml" filepath="D:\AndroidStudioProjects\kontent\kontent-core\kontent-kontent.iml" />
