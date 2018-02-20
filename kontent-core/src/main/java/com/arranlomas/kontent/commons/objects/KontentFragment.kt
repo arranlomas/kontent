@@ -1,9 +1,6 @@
-package com.arranlomas.kontent.commons.objects.android
+package com.arranlomas.kontent.commons.objects
 
 import android.support.v4.app.Fragment
-import com.arranlomas.kontent.commons.objects.mvi.KontentContract
-import com.arranlomas.kontent.commons.objects.mvi.KontentIntent
-import com.arranlomas.kontent.commons.objects.mvi.KontentViewState
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable

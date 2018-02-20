@@ -1,9 +1,9 @@
 package com.arranlomas.daggerkontent
 
 import android.annotation.SuppressLint
-import com.arranlomas.kontent.commons.objects.mvi.KontentContract
-import com.arranlomas.kontent.commons.objects.mvi.KontentIntent
-import com.arranlomas.kontent.commons.objects.mvi.KontentViewState
+import com.arranlomas.kontent.commons.objects.KontentContract
+import com.arranlomas.kontent.commons.objects.KontentIntent
+import com.arranlomas.kontent.commons.objects.KontentViewState
 import dagger.android.support.DaggerFragment
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable

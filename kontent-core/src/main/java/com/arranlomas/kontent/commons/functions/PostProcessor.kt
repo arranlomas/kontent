@@ -1,6 +1,6 @@
 package com.arranlomas.kontent.commons.functions
 
-import com.arranlomas.kontent.commons.objects.mvi.KontentViewState
+import com.arranlomas.kontent.commons.objects.KontentViewState
 
 /**
  * Created by arran on 8/02/2018.

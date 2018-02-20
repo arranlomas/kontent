@@ -1,6 +1,6 @@
 package com.arranlomas.mvisample.ui.todolist.objects
 
-import com.arranlomas.kontent.commons.objects.mvi.KontentResult
+import com.arranlomas.kontent.commons.objects.KontentResult
 import com.arranlomas.mvisample.models.TodoItem
 
 sealed class TodoListResult: KontentResult() {

@@ -1,6 +1,6 @@
 package com.arranlomas.mvisample.ui.todolist.objects
 
-import com.arranlomas.kontent.commons.objects.mvi.KontentAction
+import com.arranlomas.kontent.commons.objects.KontentAction
 import com.arranlomas.mvisample.models.TodoItemState
 
 sealed class TodoListAction: KontentAction() {

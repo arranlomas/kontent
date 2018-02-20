@@ -1,7 +1,7 @@
 package com.arranlomas.kontent.commons.functions
 
-import com.arranlomas.kontent.commons.objects.mvi.KontentAction
-import com.arranlomas.kontent.commons.objects.mvi.KontentResult
+import com.arranlomas.kontent.commons.objects.KontentAction
+import com.arranlomas.kontent.commons.objects.KontentResult
 import io.reactivex.Observable
 import io.reactivex.ObservableTransformer
 

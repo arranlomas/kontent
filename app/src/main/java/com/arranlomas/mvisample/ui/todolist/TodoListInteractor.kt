@@ -1,6 +1,6 @@
 package com.arranlomas.mvisample.ui.todolist
 
-import com.arranlomas.kontent.commons.objects.mvi.KontentInteractor
+import com.arranlomas.kontent.commons.objects.KontentInteractor
 import com.arranlomas.mvisample.repository.IListItemRepository
 import com.arranlomas.mvisample.ui.todolist.functions.listActionProcessor
 import com.arranlomas.mvisample.ui.todolist.functions.listIntentToAction

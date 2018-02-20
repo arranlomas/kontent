@@ -1,6 +1,6 @@
 package com.arranlomas.mvisample.ui.todolist.objects
 
-import com.arranlomas.kontent.commons.objects.mvi.KontentViewState
+import com.arranlomas.kontent.commons.objects.KontentViewState
 import com.arranlomas.mvisample.models.TodoItem
 
 data class TodoListViewState(

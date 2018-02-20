@@ -1,7 +1,6 @@
-package com.arranlomas.kontent.commons.objects.mvi
+package com.arranlomas.kontent.commons.objects
 
 import io.reactivex.Observable
-import io.reactivex.disposables.CompositeDisposable
 
 interface KontentContract {
 
