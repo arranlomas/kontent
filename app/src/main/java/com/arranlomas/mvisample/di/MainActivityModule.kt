@@ -1,13 +1,11 @@
-package com.arranlomas.mvisample.ui
+package com.arranlomas.mvisample.di
 
+import com.arranlomas.mvisample.MainActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
-/**
- * Created by arran on 6/02/2018.
- */
 @Module
-abstract class MainBuilder {
+abstract class MainActivityModule {
     @ContributesAndroidInjector
     internal abstract fun bindMainActivity(): MainActivity
 }

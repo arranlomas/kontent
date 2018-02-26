@@ -27,37 +27,28 @@ kapt {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
-    compile 'com.android.support:appcompat-v7:26.+'
-    compile 'com.android.support:design:26.+'
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation"org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    implementation 'com.android.support:appcompat-v7:27.0.2'
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.1'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
 
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    testCompile 'junit:junit:4.12'
+    compile 'com.jakewharton.rxbinding2:rxbinding:2.1.1'
 
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
-    compile 'com.android.support:recyclerview-v7:+'
-    compile 'com.afollestad.material-dialogs:core:0.9.6.0'
+    implementation "android.arch.lifecycle:extensions:1.1.0"
+    kapt "android.arch.lifecycle:compiler:1.1.0"
 
-    //Not required but works very nicely when dealing with lifecycle events and persisting interactors
-    kapt "com.google.dagger:dagger-compiler:2.11"
-    kapt "com.google.dagger:dagger-android-processor:2.11"
-    compile "com.google.dagger:dagger:2.11"
-    compile "com.google.dagger:dagger-android:2.11"
-    compile "com.google.dagger:dagger-android-support:2.11"
-
-    //RxJava 2 is a required dependency
-    compile 'io.reactivex.rxjava2:rxjava:2.1.6'
-
-    //RxBinding is optional, you can create the rx intent stream yourself but RxBinding makes this much easier
-    compile 'com.jakewharton.rxbinding2:rxbinding:2.0.0'
-
-    //This is the kontent dependency, here you should change this to the jcentre dependency in your apps
-    compile project(':kontent-core')
-    compile project(':kontent-dagger')
     compile project(':kontent-android-viewmodel')
+
+    kapt "com.google.dagger:dagger-compiler:2.14.1"
+    kapt "com.google.dagger:dagger-android-processor:2.14.1"
+    compile "com.google.dagger:dagger:2.14.1"
+    compile "com.google.dagger:dagger-android:2.14.1"
+    compile "com.google.dagger:dagger-android-support:2.14.1"
+
+    compile 'com.github.arranlomas.daggerviewmodelhelper:daggerviewmodelhelper:0.1.0'
 }
 repositories {
     mavenCentral()
