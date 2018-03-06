@@ -51,7 +51,7 @@ open class KontentAndroidViewModel<I : KontentIntent, A : KontentAction, R : Kon
 
         val isInitialIntent = initialIntentPredicate.invoke(intent)
         return if (isInitialIntent && initialIntentSent) {
-            //Was initial intent and initial intent has already been sent so just force emit last ViewState to view
+            //Just emit last state
             getLastState()?.let { stateSubject.onNext(it) }
             InitialIntentOptional(null)
         } else if (isInitialIntent && !initialIntentSent) {
