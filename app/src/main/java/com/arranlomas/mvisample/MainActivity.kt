@@ -8,7 +8,7 @@ import com.arranlomas.kontent.commons.functions.KontentMasterProcessor
 import com.arranlomas.kontent.commons.functions.KontentReducer
 import com.arranlomas.kontent.commons.functions.KontentSimpleActionProcessor
 import com.arranlomas.kontent.commons.objects.*
-import com.arranlomas.kontent_android_viewmodel.commons.objects.KontentViewModelInteractor
+import com.arranlomas.kontent_android_viewmodel.commons.objects.KontentAndroidViewModel
 import com.jakewharton.rxbinding2.view.RxView
 import io.reactivex.Observable
 import io.reactivex.functions.BiFunction
@@ -24,8 +24,8 @@ class MainActivity : KontentActivity<MainIntent, MainViewState>(), Injectable {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val interactor = ViewModelProviders.of(this, viewModelFactory).get(MainViewModel::class.java)
-        super.setup(interactor, { it.printStackTrace() })
+        val viewModel = ViewModelProviders.of(this, viewModelFactory).get(MainViewModel::class.java)
+        super.setup(viewModel, { it.printStackTrace() })
         super.attachIntents(intents())
     }
 
@@ -43,7 +43,7 @@ class MainActivity : KontentActivity<MainIntent, MainViewState>(), Injectable {
     }
 }
 
-class MainViewModel @Inject constructor(scoreRepository: IScoreRepository) : KontentViewModelInteractor<MainIntent, MainActions, MainResults, MainViewState>(
+class MainViewModel @Inject constructor(scoreRepository: IScoreRepository) : KontentAndroidViewModel<MainIntent, MainActions, MainResults, MainViewState>(
         intentToAction = { intent -> intentToAction(intent) },
         actionProcessor = actionProcessor(scoreRepository),
         reducer = reducer,
@@ -63,11 +63,11 @@ fun actionProcessor(scoreRepository: IScoreRepository) = KontentMasterProcessor<
             actionObservable.ofType(MainActions.IncrementTeamB::class.java)
                     .compose(KontentSimpleActionProcessor { Observable.just(MainResults.IncrementTeamB()) }),
             actionObservable.ofType(MainActions.LoadPreviousScore::class.java)
-                    .compose(loadPreviousScorProcessor(scoreRepository))
+                    .compose(loadPreviousScoreProcessor(scoreRepository))
     )
 }
 
-fun loadPreviousScorProcessor(scoreRepository: IScoreRepository) = KontentActionProcessor<MainActions.LoadPreviousScore, MainResults, Pair<Int, Int>>(
+fun loadPreviousScoreProcessor(scoreRepository: IScoreRepository) = KontentActionProcessor<MainActions.LoadPreviousScore, MainResults, Pair<Int, Int>>(
         action = {
             Observable.combineLatest(scoreRepository.getTeamAScore(), scoreRepository.getTeamBScore(), BiFunction<Int, Int, Pair<Int, Int>> { teamA, teamB ->
                 teamA to teamB

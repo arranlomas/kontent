@@ -15,23 +15,23 @@ import io.reactivex.observers.DisposableObserver
 abstract class DaggerKontentActivity<I : KontentIntent, S : KontentViewState> : KontentContract.View<I, S>, DaggerActivity() {
 
     private val subscriptions = CompositeDisposable()
-    private lateinit var interactor: KontentContract.Interactor<I, S>
+    private lateinit var viewModel: KontentContract.ViewModel<I, S>
     private lateinit var intents: Observable<I>
     private var onErrorAction: ((Throwable) -> Unit)? = null
 
-    override fun setup(interactor: KontentContract.Interactor<I, S>, onErrorAction: ((Throwable) -> Unit)?) {
-        this.interactor = interactor
+    override fun setup(viewModel: KontentContract.ViewModel<I, S>, onErrorAction: ((Throwable) -> Unit)?) {
+        this.viewModel = viewModel
         this.onErrorAction = onErrorAction
     }
 
-    override fun setup(interactor: KontentContract.Interactor<I, S>) {
-        this.interactor = interactor
+    override fun setup(viewModel: KontentContract.ViewModel<I, S>) {
+        this.viewModel = viewModel
     }
 
 
     override fun attachIntents(intents: Observable<I>) {
         this.intents = intents
-        interactor.attachView(intents)
+        viewModel.attachView(intents)
                 .subscribeWith(object : BaseSubscriber<S>() {
                     override fun onNext(state: S) {
                         render(state)
