@@ -56,13 +56,15 @@ class MainViewModel @Inject constructor(scoreRepository: IScoreRepository) : Kon
         intentToAction = { intent -> intentToAction(intent) },
         actionProcessor = actionProcessor(scoreRepository),
         reducer = reducer,
-        defaultState = MainViewState()
+        defaultState = MainViewState(),
+        initialIntentPredicate = { it is MainIntent.LoadPreviousScore }
 )
 
 fun intentToAction(intent: MainIntent): MainActions = when (intent) {
     is MainIntent.IncrementTeamA -> MainActions.IncrementTeamA()
     is MainIntent.IncrementTeamB -> MainActions.IncrementTeamB()
     is MainIntent.LoadPreviousScore -> MainActions.LoadPreviousScore()
+    is MainIntent.GetLastState -> MainActions.GetLastState()
 }
 
 fun actionProcessor(scoreRepository: IScoreRepository) = KontentMasterProcessor<MainActions, MainResults> { actionObservable ->
@@ -72,7 +74,9 @@ fun actionProcessor(scoreRepository: IScoreRepository) = KontentMasterProcessor<
             actionObservable.ofType(MainActions.IncrementTeamB::class.java)
                     .compose(KontentSimpleActionProcessor { Observable.just(MainResults.IncrementTeamB()) }),
             actionObservable.ofType(MainActions.LoadPreviousScore::class.java)
-                    .compose(loadPreviousScoreProcessor(scoreRepository))
+                    .compose(loadPreviousScoreProcessor(scoreRepository)),
+            actionObservable.ofType(MainActions.GetLastState::class.java)
+                    .compose(KontentSimpleActionProcessor { Observable.just(MainResults.GetLastState()) })
     )
 }
 
@@ -94,6 +98,7 @@ val reducer = KontentReducer<MainResults, MainViewState>({ result, previousState
         is MainResults.LoadPreviousScoreLoading -> previousState.copy(loading = true, error = null)
         is MainResults.LoadPreviousScoreError -> previousState.copy(loading = false, error = result.error)
         is MainResults.LoadPreviousScoreSuccess -> previousState.copy(loading = false, error = null, teamAScore = result.teamAScore, teamBScore = result.teamBScore)
+        is MainResults.GetLastState -> previousState
     }
 })
 
@@ -101,12 +106,14 @@ sealed class MainIntent : KontentIntent() {
     class LoadPreviousScore : MainIntent()
     class IncrementTeamA : MainIntent()
     class IncrementTeamB : MainIntent()
+    class GetLastState : MainIntent()
 }
 
 sealed class MainActions : KontentAction() {
     class LoadPreviousScore : MainActions()
     class IncrementTeamA : MainActions()
     class IncrementTeamB : MainActions()
+    class GetLastState : MainActions()
 }
 
 sealed class MainResults : KontentResult() {
@@ -115,6 +122,7 @@ sealed class MainResults : KontentResult() {
     data class LoadPreviousScoreSuccess(val teamAScore: Int, val teamBScore: Int) : MainResults()
     class IncrementTeamA : MainResults()
     class IncrementTeamB : MainResults()
+    class GetLastState : MainResults()
 }
 
 data class MainViewState(val loading: Boolean = false, val error: Throwable? = null, val teamAScore: Int = 0, val teamBScore: Int = 0) : KontentViewState()
