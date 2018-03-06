@@ -1,8 +1,10 @@
 package com.arranlomas.mvisample
 
+import android.app.ProgressDialog
 import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
+import com.arranlomas.daggerviewmodelhelper.Injectable
 import com.arranlomas.kontent.commons.functions.KontentActionProcessor
 import com.arranlomas.kontent.commons.functions.KontentMasterProcessor
 import com.arranlomas.kontent.commons.functions.KontentReducer
@@ -12,24 +14,28 @@ import com.arranlomas.kontent_android_viewmodel.commons.objects.KontentAndroidVi
 import com.jakewharton.rxbinding2.view.RxView
 import io.reactivex.Observable
 import io.reactivex.functions.BiFunction
-import javax.inject.Inject
-import com.arranlomas.daggerviewmodelhelper.Injectable
 import kotlinx.android.synthetic.main.activity_main.*
+import javax.inject.Inject
 
 class MainActivity : KontentActivity<MainIntent, MainViewState>(), Injectable {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
+    private lateinit var progressDialog: ProgressDialog
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        progressDialog = ProgressDialog(this)
         val viewModel = ViewModelProviders.of(this, viewModelFactory).get(MainViewModel::class.java)
         super.setup(viewModel, { it.printStackTrace() })
         super.attachIntents(intents())
     }
 
-    private fun intents() = Observable.merge(incrementTeamA(), incrementTeamB())
+    private fun intents() = Observable.merge(incrementTeamA(), incrementTeamB(), initialIntent())
+
+    private fun initialIntent(): Observable<MainIntent> = Observable.just(MainIntent.LoadPreviousScore())
 
     private fun incrementTeamA(): Observable<MainIntent> = RxView.clicks(teamAButton)
             .map { MainIntent.IncrementTeamA() }
@@ -40,6 +46,9 @@ class MainActivity : KontentActivity<MainIntent, MainViewState>(), Injectable {
     override fun render(state: MainViewState) {
         teamAScore.text = state.teamAScore.toString()
         teamBScore.text = state.teamBScore.toString()
+
+        if (state.loading) progressDialog.show()
+        else progressDialog.hide()
     }
 }
 
