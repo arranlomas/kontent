@@ -4,6 +4,7 @@ import com.arranlomas.kontent.commons.objects.KontentContract
 import com.arranlomas.kontent.commons.objects.KontentIntent
 import com.arranlomas.kontent.commons.objects.KontentViewState
 import dagger.android.DaggerActivity
+import dagger.android.support.DaggerAppCompatActivity
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
@@ -12,7 +13,7 @@ import io.reactivex.observers.DisposableObserver
 /**
  * Created by arran on 23/01/2018.
  */
-abstract class KontentDaggerSupportActivity<I : KontentIntent, S : KontentViewState> : KontentContract.View<I, S>, DaggerActivity() {
+abstract class KontentDaggerSupportActivity<I : KontentIntent, S : KontentViewState> : KontentContract.View<I, S>, DaggerAppCompatActivity() {
 
     private val subscriptions = CompositeDisposable()
     private lateinit var viewModel: KontentContract.ViewModel<I, S>
