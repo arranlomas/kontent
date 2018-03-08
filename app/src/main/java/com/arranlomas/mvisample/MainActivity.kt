@@ -56,7 +56,8 @@ class MainViewModel @Inject constructor(scoreRepository: IScoreRepository) : Kon
         intentToAction = { intent -> intentToAction(intent) },
         actionProcessor = actionProcessor(scoreRepository),
         reducer = reducer,
-        defaultState = MainViewState()
+        defaultState = MainViewState(),
+        initialIntentPredicate = { it is MainIntent.LoadPreviousScore }
 )
 
 fun intentToAction(intent: MainIntent): MainActions = when (intent) {
