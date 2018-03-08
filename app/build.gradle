@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+def globalConf = rootProject.ext
 
 android {
     compileSdkVersion 26
@@ -27,28 +28,31 @@ kapt {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation"org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
-    implementation 'com.android.support:appcompat-v7:27.0.2'
-    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.1'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+    Map<String, String> dependencies = globalConf.commonDependencies
+    androidTestCompile (dependencies.espressoCore, {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    androidTestImplementation dependencies.testRunner
+    testCompile dependencies.jUnit
 
-    compile 'com.jakewharton.rxbinding2:rxbinding:2.1.1'
+    implementation dependencies.constraintLayout
+    implementation dependencies.appCompat
+    implementation dependencies.kotlinStdLib
 
-    implementation "android.arch.lifecycle:extensions:1.1.0"
-    kapt "android.arch.lifecycle:compiler:1.1.0"
+    kapt dependencies.daggerCompiler
+    kapt dependencies.daggerAnnotationProcessor
+    compile dependencies.dagger
+    compile dependencies.daggerAndroid
+    compile dependencies.daggerAndroidSupport
 
+    compile dependencies.daggerHelper
+    compile dependencies.rxBinding
+
+    compile project(':kontent-core')
     compile project(':kontent-android-viewmodel')
 
-    kapt "com.google.dagger:dagger-compiler:2.14.1"
-    kapt "com.google.dagger:dagger-android-processor:2.14.1"
-    compile "com.google.dagger:dagger:2.14.1"
-    compile "com.google.dagger:dagger-android:2.14.1"
-    compile "com.google.dagger:dagger-android-support:2.14.1"
-
-    compile 'com.github.arranlomas.daggerviewmodelhelper:daggerviewmodelhelper:0.1.0'
+    compile dependencies.lifecycleExtensions
+    kapt dependencies.lifecycleCompiler
 }
 repositories {
     mavenCentral()

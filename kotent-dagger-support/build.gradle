@@ -25,10 +25,6 @@ android {
 
 }
 
-kapt {
-    generateStubs = true
-}
-
 dependencies {
     Map<String, String> dependencies = globalConf.commonDependencies
     androidTestCompile (dependencies.espressoCore, {
@@ -48,3 +44,4 @@ dependencies {
 
     compile project(':kontent-core')
 }
+

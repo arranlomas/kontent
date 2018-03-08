@@ -1,1 +1,1 @@
-include ':app', ':kontent-core', ':kontent-dagger', ':kontent-android-viewmodel'
+include ':app', ':kontent-core', ':kontent-dagger', ':kontent-android-viewmodel', ':kotent-dagger-support'

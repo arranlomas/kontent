@@ -12,6 +12,7 @@
             <option value="$PROJECT_DIR$/kontent-android-viewmodel" />
             <option value="$PROJECT_DIR$/kontent-core" />
             <option value="$PROJECT_DIR$/kontent-dagger" />
+            <option value="$PROJECT_DIR$/kotent-dagger-support" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
