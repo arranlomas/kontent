@@ -9,8 +9,9 @@
       <module fileurl="file://$PROJECT_DIR$/kontent-android-viewmodel/kontent-android-viewmodel.iml" filepath="$PROJECT_DIR$/kontent-android-viewmodel/kontent-android-viewmodel.iml" />
       <module fileurl="file://$PROJECT_DIR$/kontent-core/kontent-core.iml" filepath="$PROJECT_DIR$/kontent-core/kontent-core.iml" />
       <module fileurl="file://$PROJECT_DIR$/kontent-dagger/kontent-dagger.iml" filepath="$PROJECT_DIR$/kontent-dagger/kontent-dagger.iml" />
-      <module fileurl="file://$PROJECT_DIR$/kontent-dagger-support/kotent-dagger-support.iml" filepath="$PROJECT_DIR$/kontent-dagger-support/kotent-dagger-support.iml" />
+      <module fileurl="file://$PROJECT_DIR$/kontent-dagger-support/kontent-dagger-support.iml" filepath="$PROJECT_DIR$/kontent-dagger-support/kontent-dagger-support.iml" />
       <module fileurl="file://D:\AndroidStudioProjects\kontent\kontent-core\kontent-kontent.iml" filepath="D:\AndroidStudioProjects\kontent\kontent-core\kontent-kontent.iml" />
+      <module fileurl="file://D:\AndroidStudioProjects\kontent\kontent-dagger-support\kotent-dagger-support.iml" filepath="D:\AndroidStudioProjects\kontent\kontent-dagger-support\kotent-dagger-support.iml" />
     </modules>
   </component>
 </project>
