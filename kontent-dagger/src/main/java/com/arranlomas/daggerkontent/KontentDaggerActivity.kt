@@ -24,20 +24,24 @@ abstract class KontentDaggerActivity<I : KontentIntent, S : KontentViewState> : 
         this.onErrorAction = onErrorAction
     }
 
-    override fun setup(viewModel: KontentContract.ViewModel<I, S>) {
-        this.viewModel = viewModel
+    fun <T : I> attachIntents(intents: Observable<I>, initialIntent: Class<T>) {
+        this.intents = intents
+        viewModel.attachView(intents, initialIntent)
+                .subscribeWith(intentSubscriber)
+                .addDisposable()
     }
 
-
-    override fun attachIntents(intents: Observable<I>) {
+    fun attachIntents(intents: Observable<I>) {
         this.intents = intents
         viewModel.attachView(intents)
-                .subscribeWith(object : BaseSubscriber<S>() {
-                    override fun onNext(state: S) {
-                        render(state)
-                    }
-                })
+                .subscribeWith(intentSubscriber)
                 .addDisposable()
+    }
+
+    private val intentSubscriber = object : BaseSubscriber<S>() {
+        override fun onNext(state: S) {
+            render(state)
+        }
     }
 
     override fun onDestroy() {

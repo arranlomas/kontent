@@ -18,25 +18,24 @@ abstract class KontentActivity<I : KontentIntent, S : KontentViewState> : Konten
         this.onErrorAction = onErrorAction
     }
 
-    override fun setup(viewModel: KontentContract.ViewModel<I, S>) {
-        this.viewModel = viewModel
-    }
-
-
-    override fun attachIntents(intents: Observable<I>) {
+    fun <T : I> attachIntents(intents: Observable<I>, initialIntent: Class<T>) {
         this.intents = intents
-        viewModel.attachView(intents)
-                .subscribeWith(object : BaseSubscriber<S>() {
-                    override fun onNext(state: S) {
-                        render(state)
-                    }
-                })
+        viewModel.attachView(intents, initialIntent)
+                .subscribeWith(intentSubscriber)
                 .addDisposable()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        subscriptions.dispose()
+    fun attachIntents(intents: Observable<I>) {
+        this.intents = intents
+        viewModel.attachView(intents)
+                .subscribeWith(intentSubscriber)
+                .addDisposable()
+    }
+
+    private val intentSubscriber = object : BaseSubscriber<S>() {
+        override fun onNext(state: S) {
+            render(state)
+        }
     }
 
     private fun Disposable.addDisposable() {
@@ -54,5 +53,10 @@ abstract class KontentActivity<I : KontentIntent, S : KontentViewState> : Konten
         override fun onComplete() {
 
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        subscriptions.dispose()
     }
 }

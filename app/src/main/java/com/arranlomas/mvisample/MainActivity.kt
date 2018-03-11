@@ -30,7 +30,7 @@ class MainActivity : KontentActivity<MainIntent, MainViewState>(), Injectable {
         progressDialog = ProgressDialog(this)
         val viewModel = ViewModelProviders.of(this, viewModelFactory).get(MainViewModel::class.java)
         super.setup(viewModel, { it.printStackTrace() })
-        super.attachIntents(intents())
+        super.attachIntents(intents(), MainIntent.LoadPreviousScore::class.java)
     }
 
     private fun intents() = Observable.merge(incrementTeamA(), incrementTeamB(), initialIntent())
@@ -56,8 +56,7 @@ class MainViewModel @Inject constructor(scoreRepository: IScoreRepository) : Kon
         intentToAction = { intent -> intentToAction(intent) },
         actionProcessor = actionProcessor(scoreRepository),
         reducer = reducer,
-        defaultState = MainViewState(),
-        initialIntent = MainIntent.LoadPreviousScore()
+        defaultState = MainViewState()
 )
 
 fun intentToAction(intent: MainIntent): MainActions = when (intent) {

@@ -6,33 +6,47 @@ import io.reactivex.functions.BiFunction
 import io.reactivex.subjects.BehaviorSubject
 
 open class KontentViewModel<I : KontentIntent, A : KontentAction, R : KontentResult, S : KontentViewState>(
-        intentToAction: (I) -> A,
-        actionProcessor: ObservableTransformer<A, R>,
-        defaultState: S,
+        private val intentToAction: (I) -> A,
+        private val actionProcessor: ObservableTransformer<A, R>,
+        private val defaultState: S,
         private val reducer: BiFunction<S, R, S>,
-        postProcessor: (Function1<S, S>)? = null) : KontentContract.ViewModel<I, S> {
+        private val postProcessor: (Function1<S, S>)? = null) : KontentContract.ViewModel<I, S> {
 
-    val intentsSubject: BehaviorSubject<I> = BehaviorSubject.create()
-    val stateSubject: BehaviorSubject<S> = BehaviorSubject.create()
+    private val stateSubject: BehaviorSubject<S> = BehaviorSubject.create()
 
-    private var processor: (Observable<I>) -> Observable<S>
+    private var intentFilter: ObservableTransformer<I, I>? = null
 
-    override fun attachView(intents: Observable<I>): Observable<S> {
-        intents.subscribe(intentsSubject)
-        processor.invoke(intents)
+    override fun <T : I> attachView(intents: Observable<I>, initialIntent: Class<T>): Observable<S> {
+        if (intentFilter == null) intentFilter = getInitialIntentFilter(initialIntent)
+        intents.compose(intentFilter)
+                .applyMvi()
                 .subscribe(stateSubject)
         return stateSubject
     }
 
-    override fun getLastState(): S? = stateSubject.value
+    override fun attachView(intents: Observable<I>): Observable<S> {
+        intents.applyMvi()
+                .subscribe(stateSubject)
+        return stateSubject
+    }
 
-    init {
-        this.processor = { intents ->
-            intents
-                    .map { intent -> intentToAction.invoke(intent) }
-                    .compose(actionProcessor)
-                    .scan(defaultState, reducer)
-                    .map { postProcessor?.invoke(it) ?: it }
-        }
+    override fun getLastState(): S? = stateSubject.value ?: defaultState
+
+    private fun Observable<I>.applyMvi(): Observable<S> {
+        return this.map { intent -> intentToAction.invoke(intent) }
+                .compose(actionProcessor)
+                .scan(getLastState(), reducer)
+                .map { postProcessor?.invoke(it) ?: it }
+    }
+}
+
+fun <I, T : I> getInitialIntentFilter(clazz: Class<T>): ObservableTransformer<I, I> {
+    var emittedCount = 0
+    return ObservableTransformer {
+        it.filter { (clazz.isInstance(it) && emittedCount < 1) || !clazz.isInstance(it) }
+                .map {
+                    if (clazz.isInstance(it)) emittedCount++
+                    it
+                }
     }
 }

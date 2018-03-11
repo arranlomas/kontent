@@ -22,13 +22,9 @@ abstract class KontentDaggerFragment<I : KontentIntent, S : KontentViewState> : 
         this.onErrorAction = onErrorAction
     }
 
-    override fun setup(viewModel: KontentContract.ViewModel<I, S>) {
-        this.viewModel = viewModel
-    }
-
-    override fun attachIntents(intents: Observable<I>) {
+    override fun <T: I>attachIntents(intents: Observable<I>,  initialIntent: Class<T>?) {
         this.intents = intents
-        viewModel.attachView(intents)
+        viewModel.attachView(intents, initialIntent)
                 .subscribeWith(object : BaseSubscriber<S>() {
                     override fun onNext(state: S) {
                         render(state)
