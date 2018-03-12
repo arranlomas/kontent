@@ -49,6 +49,7 @@ dependencies {
     compile dependencies.rxBinding
 
     compile project(':kontent-core')
+    compile project(':kontent-dagger-support')
     compile project(':kontent-android-viewmodel')
 
     compile dependencies.lifecycleExtensions

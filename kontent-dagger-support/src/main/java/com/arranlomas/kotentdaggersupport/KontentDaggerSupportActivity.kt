@@ -3,12 +3,12 @@ package com.arranlomas.kotentdaggersupport
 import com.arranlomas.kontent.commons.objects.KontentContract
 import com.arranlomas.kontent.commons.objects.KontentIntent
 import com.arranlomas.kontent.commons.objects.KontentViewState
-import dagger.android.DaggerActivity
 import dagger.android.support.DaggerAppCompatActivity
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.observers.DisposableObserver
+import org.reactivestreams.Subscriber
 
 /**
  * Created by arran on 23/01/2018.
@@ -25,15 +25,24 @@ abstract class KontentDaggerSupportActivity<I : KontentIntent, S : KontentViewSt
         this.onErrorAction = onErrorAction
     }
 
-    override fun <T: I>attachIntents(intents: Observable<I>,  initialIntent: Class<T>?) {
+    fun <T : I> attachIntents(intents: Observable<I>, initialIntent: Class<T>) {
         this.intents = intents
         viewModel.attachView(intents, initialIntent)
-                .subscribeWith(object : BaseSubscriber<S>() {
-                    override fun onNext(state: S) {
-                        render(state)
-                    }
-                })
+                .subscribeWith(intentSubscriber)
                 .addDisposable()
+    }
+
+    fun attachIntents(intents: Observable<I>) {
+        this.intents = intents
+        viewModel.attachView(intents)
+                .subscribeWith(intentSubscriber)
+                .addDisposable()
+    }
+
+    private val intentSubscriber: DisposableObserver<S> = object : BaseSubscriber<S>() {
+        override fun onNext(state: S) {
+            render(state)
+        }
     }
 
     override fun onDestroy() {
@@ -45,7 +54,7 @@ abstract class KontentDaggerSupportActivity<I : KontentIntent, S : KontentViewSt
         subscriptions.add(this)
     }
 
-    abstract inner class BaseSubscriber<T>(val showLoading: Boolean = true) : DisposableObserver<T>() {
+    abstract inner class BaseSubscriber<A>(val showLoading: Boolean = true) : DisposableObserver<A>() {
         override fun onError(e: Throwable) {
             onErrorAction?.invoke(e) ?: e.printStackTrace()
         }
@@ -54,7 +63,6 @@ abstract class KontentDaggerSupportActivity<I : KontentIntent, S : KontentViewSt
         }
 
         override fun onComplete() {
-
         }
     }
 }

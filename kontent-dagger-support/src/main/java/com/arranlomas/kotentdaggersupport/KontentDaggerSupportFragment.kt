@@ -22,15 +22,24 @@ abstract class KontentDaggerSupportFragment<I : KontentIntent, S : KontentViewSt
         this.onErrorAction = onErrorAction
     }
 
-    override fun <T: I>attachIntents(intents: Observable<I>,  initialIntent: Class<T>?) {
+    fun <T : I> attachIntents(intents: Observable<I>, initialIntent: Class<T>) {
         this.intents = intents
         viewModel.attachView(intents, initialIntent)
-                .subscribeWith(object : BaseSubscriber<S>() {
-                    override fun onNext(state: S) {
-                        render(state)
-                    }
-                })
+                .subscribeWith(intentSubscriber)
                 .addDisposable()
+    }
+
+    fun attachIntents(intents: Observable<I>) {
+        this.intents = intents
+        viewModel.attachView(intents)
+                .subscribeWith(intentSubscriber)
+                .addDisposable()
+    }
+
+    private val intentSubscriber: DisposableObserver<S> = object : BaseSubscriber<S>() {
+        override fun onNext(state: S) {
+            render(state)
+        }
     }
 
     @SuppressLint("MissingSuperCall")

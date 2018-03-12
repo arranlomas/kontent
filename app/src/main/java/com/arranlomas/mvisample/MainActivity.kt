@@ -11,13 +11,14 @@ import com.arranlomas.kontent.commons.functions.KontentReducer
 import com.arranlomas.kontent.commons.functions.KontentSimpleActionProcessor
 import com.arranlomas.kontent.commons.objects.*
 import com.arranlomas.kontent_android_viewmodel.commons.objects.KontentAndroidViewModel
+import com.arranlomas.kotentdaggersupport.KontentDaggerSupportActivity
 import com.jakewharton.rxbinding2.view.RxView
 import io.reactivex.Observable
 import io.reactivex.functions.BiFunction
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
-class MainActivity : KontentActivity<MainIntent, MainViewState>(), Injectable {
+class MainActivity : KontentDaggerSupportActivity<MainIntent, MainViewState>() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
