@@ -1,13 +1,15 @@
 package com.arranlomas.kontent.commons.objects
 
-import android.support.v7.app.AppCompatActivity
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.observers.DisposableObserver
 
-abstract class KontentActivity<I : KontentIntent, A: KontentAction, R: KontentResult, S : KontentViewState>
-    : KontentContract.View<I, A, R, S>, AppCompatActivity() {
+/**
+ * Created by arranlomas on 18/3/18.
+ */
+abstract class KontentView<I : KontentIntent, A : KontentAction, R : KontentResult, S : KontentViewState>
+    : KontentContract.View<I, A, R, S> {
 
     private val subscriptions = CompositeDisposable()
     private lateinit var viewModel: KontentContract.ViewModel<I, A, R, S>
@@ -52,12 +54,6 @@ abstract class KontentActivity<I : KontentIntent, A: KontentAction, R: KontentRe
         }
 
         override fun onComplete() {
-
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        subscriptions.dispose()
     }
 }

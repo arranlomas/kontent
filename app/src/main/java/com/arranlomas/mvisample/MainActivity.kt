@@ -4,12 +4,14 @@ import android.app.ProgressDialog
 import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
-import com.arranlomas.daggerviewmodelhelper.Injectable
 import com.arranlomas.kontent.commons.functions.KontentActionProcessor
 import com.arranlomas.kontent.commons.functions.KontentMasterProcessor
 import com.arranlomas.kontent.commons.functions.KontentReducer
 import com.arranlomas.kontent.commons.functions.KontentSimpleActionProcessor
-import com.arranlomas.kontent.commons.objects.*
+import com.arranlomas.kontent.commons.objects.KontentAction
+import com.arranlomas.kontent.commons.objects.KontentIntent
+import com.arranlomas.kontent.commons.objects.KontentResult
+import com.arranlomas.kontent.commons.objects.KontentViewState
 import com.arranlomas.kontent_android_viewmodel.commons.objects.KontentAndroidViewModel
 import com.arranlomas.kotentdaggersupport.KontentDaggerSupportActivity
 import com.jakewharton.rxbinding2.view.RxView
@@ -18,7 +20,7 @@ import io.reactivex.functions.BiFunction
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
-class MainActivity : KontentDaggerSupportActivity<MainIntent, MainViewState>() {
+class MainActivity : KontentDaggerSupportActivity<MainIntent, MainActions, MainResults, MainViewState>() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -53,12 +55,13 @@ class MainActivity : KontentDaggerSupportActivity<MainIntent, MainViewState>() {
     }
 }
 
-class MainViewModel @Inject constructor(scoreRepository: IScoreRepository) : KontentAndroidViewModel<MainIntent, MainActions, MainResults, MainViewState>(
-        intentToAction = { intent -> intentToAction(intent) },
-        actionProcessor = actionProcessor(scoreRepository),
-        reducer = reducer,
-        defaultState = MainViewState()
-)
+class MainViewModel @Inject constructor(scoreRepository: IScoreRepository) :
+        KontentAndroidViewModel<MainIntent, MainActions, MainResults, MainViewState>(
+                intentToAction = { intent -> intentToAction(intent) },
+                actionProcessor = actionProcessor(scoreRepository),
+                reducer = reducer,
+                defaultState = MainViewState()
+        )
 
 fun intentToAction(intent: MainIntent): MainActions = when (intent) {
     is MainIntent.IncrementTeamA -> MainActions.IncrementTeamA()

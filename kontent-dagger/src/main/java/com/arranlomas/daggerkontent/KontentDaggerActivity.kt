@@ -1,7 +1,9 @@
 package com.arranlomas.daggerkontent
 
+import com.arranlomas.kontent.commons.objects.KontentAction
 import com.arranlomas.kontent.commons.objects.KontentContract
 import com.arranlomas.kontent.commons.objects.KontentIntent
+import com.arranlomas.kontent.commons.objects.KontentResult
 import com.arranlomas.kontent.commons.objects.KontentViewState
 import dagger.android.DaggerActivity
 import io.reactivex.Observable
@@ -12,14 +14,15 @@ import io.reactivex.observers.DisposableObserver
 /**
  * Created by arran on 23/01/2018.
  */
-abstract class KontentDaggerActivity<I : KontentIntent, S : KontentViewState> : KontentContract.View<I, S>, DaggerActivity() {
+abstract class KontentDaggerActivity<I : KontentIntent, A: KontentAction, R: KontentResult, S : KontentViewState>
+    : KontentContract.View<I, A, R, S>, DaggerActivity() {
 
     private val subscriptions = CompositeDisposable()
-    private lateinit var viewModel: KontentContract.ViewModel<I, S>
+    private lateinit var viewModel: KontentContract.ViewModel<I, A, R, S>
     private lateinit var intents: Observable<I>
     private var onErrorAction: ((Throwable) -> Unit)? = null
 
-    override fun setup(viewModel: KontentContract.ViewModel<I, S>, onErrorAction: ((Throwable) -> Unit)?) {
+    override fun setup(viewModel: KontentContract.ViewModel<I, A, R, S>, onErrorAction: ((Throwable) -> Unit)?) {
         this.viewModel = viewModel
         this.onErrorAction = onErrorAction
     }
