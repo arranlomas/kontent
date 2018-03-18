@@ -2,14 +2,54 @@ package com.arranlomas.kontent.commons.objects
 
 import io.reactivex.Observable
 import io.reactivex.ObservableTransformer
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
 import io.reactivex.functions.BiFunction
+import io.reactivex.observers.DisposableObserver
 import io.reactivex.subjects.BehaviorSubject
 
 interface KontentContract {
 
     interface View<I : KontentIntent, A : KontentAction, R : KontentResult, S : KontentViewState> {
-        fun setup(viewModel: ViewModel<I, A, R, S>, onErrorAction: ((Throwable) -> Unit)? = null)
         fun render(state: S)
+        var viewModel: KontentContract.ViewModel<I, A, R, S>
+        val subscriptions: CompositeDisposable
+        var onErrorAction: ((Throwable) -> Unit)?
+
+        val intentSubscriber: DisposableObserver<S>
+
+        fun setup(viewModel: KontentContract.ViewModel<I, A, R, S>, onErrorAction: ((Throwable) -> Unit)? = null) {
+            this.viewModel = viewModel
+            this.onErrorAction = onErrorAction
+        }
+
+        fun <T : I> attachIntents(intents: Observable<I>, initialIntent: Class<T>) {
+            viewModel.attachView(intents, initialIntent)
+                    .subscribeWith(intentSubscriber)
+                    .addDisposable()
+        }
+
+        fun attachIntents(intents: Observable<I>) {
+            viewModel.attachView(intents)
+                    .subscribeWith(intentSubscriber)
+                    .addDisposable()
+        }
+
+        private fun Disposable.addDisposable() {
+            subscriptions.add(this)
+        }
+    }
+
+    abstract class BaseSubscriber<A>(val onErrorAction: ((Throwable) -> Unit)?, val showLoading: Boolean = true) : DisposableObserver<A>() {
+        override fun onError(e: Throwable) {
+            onErrorAction?.invoke(e) ?: e.printStackTrace()
+        }
+
+        override fun onStart() {
+        }
+
+        override fun onComplete() {
+        }
     }
 
     interface ViewModel<I : KontentIntent, A : KontentAction, R : KontentResult, S : KontentViewState> {

@@ -20,7 +20,8 @@ import io.reactivex.functions.BiFunction
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
-class MainActivity : KontentDaggerSupportActivity<MainIntent, MainActions, MainResults, MainViewState>() {
+class MainActivity :
+        KontentDaggerSupportActivity<MainIntent, MainActions, MainResults, MainViewState>() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory

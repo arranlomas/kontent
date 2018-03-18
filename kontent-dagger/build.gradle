@@ -44,7 +44,7 @@ dependencies {
     kapt dependencies.daggerCompiler
     kapt dependencies.daggerAnnotationProcessor
     compile dependencies.dagger
-    compile dependencies.daggerAndroidSupport
+    compile dependencies.daggerAndroid
 
     compile project(':kontent-core')
 }
