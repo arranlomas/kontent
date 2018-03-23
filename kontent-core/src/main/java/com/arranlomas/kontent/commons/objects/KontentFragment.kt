@@ -4,10 +4,10 @@ import android.support.v4.app.Fragment
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableObserver
 
-abstract class KontentFragment<I : KontentIntent, A : KontentAction, R : KontentResult, S : KontentViewState>
-    : KontentContract.View<I, A, R, S>, Fragment() {
+abstract class KontentFragment<A : KontentAction, R : KontentResult, S : KontentViewState>
+    : KontentContract.View<A, R, S>, Fragment() {
 
-    override lateinit var viewModel: KontentContract.ViewModel<I, A, R, S>
+    override lateinit var viewModel: KontentContract.ViewModel<A, R, S>
     override val subscriptions: CompositeDisposable = CompositeDisposable()
     override var onErrorAction: ((Throwable) -> Unit)? = null
 

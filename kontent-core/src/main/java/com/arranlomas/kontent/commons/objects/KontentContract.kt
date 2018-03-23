@@ -10,27 +10,27 @@ import io.reactivex.subjects.BehaviorSubject
 
 interface KontentContract {
 
-    interface View<I : KontentIntent, A : KontentAction, R : KontentResult, S : KontentViewState> {
+    interface View<A : KontentAction, R : KontentResult, S : KontentViewState> {
         fun render(state: S)
-        var viewModel: KontentContract.ViewModel<I, A, R, S>
+        var viewModel: KontentContract.ViewModel<A, R, S>
         val subscriptions: CompositeDisposable
         var onErrorAction: ((Throwable) -> Unit)?
 
         val intentSubscriber: DisposableObserver<S>
 
-        fun setup(viewModel: KontentContract.ViewModel<I, A, R, S>, onErrorAction: ((Throwable) -> Unit)? = null) {
+        fun setup(viewModel: KontentContract.ViewModel<A, R, S>, onErrorAction: ((Throwable) -> Unit)? = null) {
             this.viewModel = viewModel
             this.onErrorAction = onErrorAction
         }
 
-        fun <T : I> attachIntents(intents: Observable<I>, initialIntent: Class<T>) {
-            viewModel.attachView(intents, initialIntent)
+        fun <T : A> attachIntents(actions: Observable<A>, initialActions: Class<T>) {
+            viewModel.attachView(actions, initialActions)
                     .subscribeWith(intentSubscriber)
                     .addDisposable()
         }
 
-        fun attachIntents(intents: Observable<I>) {
-            viewModel.attachView(intents)
+        fun attachIntents(actions: Observable<A>) {
+            viewModel.attachView(actions)
                     .subscribeWith(intentSubscriber)
                     .addDisposable()
         }
@@ -52,21 +52,19 @@ interface KontentContract {
         }
     }
 
-    interface ViewModel<I : KontentIntent, A : KontentAction, R : KontentResult, S : KontentViewState> {
+    interface ViewModel<A : KontentAction, R : KontentResult, S : KontentViewState> {
         val stateSubject: BehaviorSubject<S>
 
-        var intentFilter: ObservableTransformer<I, I>?
+        var intentFilter: ObservableTransformer<A, A>?
 
-        val intentToAction: (I) -> A
         val actionProcessor: ObservableTransformer<A, R>
         val defaultState: S
         val reducer: BiFunction<S, R, S>
         val postProcessor: (Function1<S, S>)?
 
-        fun <T : I> attachView(intents: Observable<I>, initialIntent: Class<T>): Observable<S> {
+        fun <T : A> attachView(intents: Observable<A>, initialIntent: Class<T>): Observable<S> {
             return attachViewMethod(intents,
                     stateSubject,
-                    intentToAction,
                     actionProcessor,
                     reducer,
                     { getLastState() },
@@ -74,10 +72,9 @@ interface KontentContract {
                     intentFilter)
         }
 
-        fun attachView(intents: Observable<I>): Observable<S> {
+        fun attachView(intents: Observable<A>): Observable<S> {
             return attachViewMethod(intents,
                     stateSubject,
-                    intentToAction,
                     actionProcessor,
                     reducer,
                     { getLastState() },
@@ -100,28 +97,27 @@ fun <I, T : I> getInitialIntentFilter(clazz: Class<T>): ObservableTransformer<I,
     }
 }
 
-internal fun <I, A, R, S> attachViewMethod(intents: Observable<I>,
-        subscriber: BehaviorSubject<S>,
-        intentToAction: (I) -> A,
-        actionProcessor: ObservableTransformer<A, R>,
-        reducer: BiFunction<S, R, S>,
-        getLastState: () -> S,
-        postProcessor: (Function1<S, S>)?,
-        intentFilter: ObservableTransformer<I, I>?): Observable<S> {
+internal fun <A, R, S> attachViewMethod(intents: Observable<A>,
+                                        subscriber: BehaviorSubject<S>,
+                                        actionProcessor: ObservableTransformer<A, R>,
+                                        reducer: BiFunction<S, R, S>,
+                                        getLastState: () -> S,
+                                        postProcessor: (Function1<S, S>)?,
+                                        intentFilter: ObservableTransformer<A, A>?): Observable<S> {
     val obs = intentFilter.let { intents.compose(intentFilter) } ?: intents
-    obs.applyMvi(intentToAction, actionProcessor, reducer, getLastState, postProcessor)
+    obs.applyMvi(actionProcessor, reducer, getLastState, postProcessor)
             .filterOnComplete()
             .subscribe(subscriber)
     return subscriber
 }
 
-internal fun <I, A, R, S> Observable<I>.applyMvi(intentToAction: (I) -> A,
+internal fun <A, R, S> Observable<A>.applyMvi(
         actionProcessor: ObservableTransformer<A, R>,
         reducer: BiFunction<S, R, S>,
         getLastState: () -> S,
         postProcessor: (Function1<S, S>)? = null
 ): Observable<S> {
-    return this.map { intent -> intentToAction.invoke(intent) }
+    return this
             .compose(actionProcessor)
             .scan(getLastState.invoke(), reducer)
             .map { postProcessor?.invoke(it) ?: it }

@@ -9,7 +9,6 @@ import com.arranlomas.kontent.commons.functions.KontentMasterProcessor
 import com.arranlomas.kontent.commons.functions.KontentReducer
 import com.arranlomas.kontent.commons.functions.KontentSimpleActionProcessor
 import com.arranlomas.kontent.commons.objects.KontentAction
-import com.arranlomas.kontent.commons.objects.KontentIntent
 import com.arranlomas.kontent.commons.objects.KontentResult
 import com.arranlomas.kontent.commons.objects.KontentViewState
 import com.arranlomas.kontent_android_viewmodel.commons.objects.KontentAndroidViewModel
@@ -21,7 +20,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
 class MainActivity :
-        KontentDaggerSupportActivity<MainIntent, MainActions, MainResults, MainViewState>() {
+        KontentDaggerSupportActivity<MainActions, MainResults, MainViewState>() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -34,18 +33,18 @@ class MainActivity :
         progressDialog = ProgressDialog(this)
         val viewModel = ViewModelProviders.of(this, viewModelFactory).get(MainViewModel::class.java)
         super.setup(viewModel, { it.printStackTrace() })
-        super.attachIntents(intents(), MainIntent.LoadPreviousScore::class.java)
+        super.attachIntents(intents(), MainActions.LoadPreviousScore::class.java)
     }
 
     private fun intents() = Observable.merge(incrementTeamA(), incrementTeamB(), initialIntent())
 
-    private fun initialIntent(): Observable<MainIntent> = Observable.just(MainIntent.LoadPreviousScore())
+    private fun initialIntent(): Observable<MainActions> = Observable.just(MainActions.LoadPreviousScore())
 
-    private fun incrementTeamA(): Observable<MainIntent> = RxView.clicks(teamAButton)
-            .map { MainIntent.IncrementTeamA() }
+    private fun incrementTeamA(): Observable<MainActions> = RxView.clicks(teamAButton)
+            .map { MainActions.IncrementTeamA() }
 
-    private fun incrementTeamB(): Observable<MainIntent> = RxView.clicks(teamBButton)
-            .map { MainIntent.IncrementTeamB() }
+    private fun incrementTeamB(): Observable<MainActions> = RxView.clicks(teamBButton)
+            .map { MainActions.IncrementTeamB() }
 
     override fun render(state: MainViewState) {
         teamAScore.text = state.teamAScore.toString()
@@ -57,18 +56,11 @@ class MainActivity :
 }
 
 class MainViewModel @Inject constructor(scoreRepository: IScoreRepository) :
-        KontentAndroidViewModel<MainIntent, MainActions, MainResults, MainViewState>(
-                intentToAction = { intent -> intentToAction(intent) },
+        KontentAndroidViewModel<MainActions, MainResults, MainViewState>(
                 actionProcessor = actionProcessor(scoreRepository),
                 reducer = reducer,
                 defaultState = MainViewState()
         )
-
-fun intentToAction(intent: MainIntent): MainActions = when (intent) {
-    is MainIntent.IncrementTeamA -> MainActions.IncrementTeamA()
-    is MainIntent.IncrementTeamB -> MainActions.IncrementTeamB()
-    is MainIntent.LoadPreviousScore -> MainActions.LoadPreviousScore()
-}
 
 fun actionProcessor(scoreRepository: IScoreRepository) = KontentMasterProcessor<MainActions, MainResults> { actionObservable ->
     Observable.merge(
@@ -101,12 +93,6 @@ val reducer = KontentReducer<MainResults, MainViewState>({ result, previousState
         is MainResults.LoadPreviousScoreSuccess -> previousState.copy(loading = false, error = null, teamAScore = result.teamAScore, teamBScore = result.teamBScore)
     }
 })
-
-sealed class MainIntent : KontentIntent() {
-    class LoadPreviousScore : MainIntent()
-    class IncrementTeamA : MainIntent()
-    class IncrementTeamB : MainIntent()
-}
 
 sealed class MainActions : KontentAction() {
     class LoadPreviousScore : MainActions()
