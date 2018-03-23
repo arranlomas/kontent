@@ -33,12 +33,12 @@ class MainActivity :
         progressDialog = ProgressDialog(this)
         val viewModel = ViewModelProviders.of(this, viewModelFactory).get(MainViewModel::class.java)
         super.setup(viewModel, { it.printStackTrace() })
-        super.attachIntents(intents(), MainActions.LoadPreviousScore::class.java)
+        super.attachActions(actions(), MainActions.LoadPreviousScore::class.java)
     }
 
-    private fun intents() = Observable.merge(incrementTeamA(), incrementTeamB(), initialIntent())
+    private fun actions() = Observable.merge(incrementTeamA(), incrementTeamB(), initialAction())
 
-    private fun initialIntent(): Observable<MainActions> = Observable.just(MainActions.LoadPreviousScore())
+    private fun initialAction(): Observable<MainActions> = Observable.just(MainActions.LoadPreviousScore())
 
     private fun incrementTeamA(): Observable<MainActions> = RxView.clicks(teamAButton)
             .map { MainActions.IncrementTeamA() }

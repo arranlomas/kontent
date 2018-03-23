@@ -12,10 +12,10 @@ open class KontentViewModel<A : KontentAction, R : KontentResult, S : KontentVie
         override val postProcessor: ((S) -> S)? = null)
     : KontentContract.ViewModel<A, R, S> {
     override val stateSubject: BehaviorSubject<S> = BehaviorSubject.create()
-    override var intentFilter: ObservableTransformer<A, A>? = null
+    override var actionFilter: ObservableTransformer<A, A>? = null
 
-    override fun <T : A> attachView(intents: Observable<A>, initialIntent: Class<T>): Observable<S> {
-        if (intentFilter == null) intentFilter = getInitialIntentFilter(initialIntent)
-        return super.attachView(intents, initialIntent)
+    override fun <T : A> attachView(actions: Observable<A>, initialAction: Class<T>): Observable<S> {
+        if (actionFilter == null) actionFilter = getInitialActionFilter(initialAction)
+        return super.attachView(actions, initialAction)
     }
 }

@@ -15,7 +15,7 @@ abstract class KontentDaggerSupportFragment<A : KontentAction, R : KontentResult
     override val subscriptions: CompositeDisposable = CompositeDisposable()
     override var onErrorAction: ((Throwable) -> Unit)? = null
 
-    override val intentSubscriber: DisposableObserver<S> = object : KontentContract.BaseSubscriber<S>(onErrorAction) {
+    override val actionsSubscriber: DisposableObserver<S> = object : KontentContract.BaseSubscriber<S>(onErrorAction) {
         override fun onNext(state: S) {
             render(state)
         }

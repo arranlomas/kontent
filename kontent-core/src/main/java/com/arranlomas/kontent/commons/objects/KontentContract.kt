@@ -16,22 +16,22 @@ interface KontentContract {
         val subscriptions: CompositeDisposable
         var onErrorAction: ((Throwable) -> Unit)?
 
-        val intentSubscriber: DisposableObserver<S>
+        val actionsSubscriber: DisposableObserver<S>
 
         fun setup(viewModel: KontentContract.ViewModel<A, R, S>, onErrorAction: ((Throwable) -> Unit)? = null) {
             this.viewModel = viewModel
             this.onErrorAction = onErrorAction
         }
 
-        fun <T : A> attachIntents(actions: Observable<A>, initialActions: Class<T>) {
+        fun <T : A> attachActions(actions: Observable<A>, initialActions: Class<T>) {
             viewModel.attachView(actions, initialActions)
-                    .subscribeWith(intentSubscriber)
+                    .subscribeWith(actionsSubscriber)
                     .addDisposable()
         }
 
-        fun attachIntents(actions: Observable<A>) {
+        fun attachActions(actions: Observable<A>) {
             viewModel.attachView(actions)
-                    .subscribeWith(intentSubscriber)
+                    .subscribeWith(actionsSubscriber)
                     .addDisposable()
         }
 
@@ -55,25 +55,25 @@ interface KontentContract {
     interface ViewModel<A : KontentAction, R : KontentResult, S : KontentViewState> {
         val stateSubject: BehaviorSubject<S>
 
-        var intentFilter: ObservableTransformer<A, A>?
+        var actionFilter: ObservableTransformer<A, A>?
 
         val actionProcessor: ObservableTransformer<A, R>
         val defaultState: S
         val reducer: BiFunction<S, R, S>
         val postProcessor: (Function1<S, S>)?
 
-        fun <T : A> attachView(intents: Observable<A>, initialIntent: Class<T>): Observable<S> {
-            return attachViewMethod(intents,
+        fun <T : A> attachView(actions: Observable<A>, initialAction: Class<T>): Observable<S> {
+            return attachViewMethod(actions,
                     stateSubject,
                     actionProcessor,
                     reducer,
                     { getLastState() },
                     postProcessor,
-                    intentFilter)
+                    actionFilter)
         }
 
-        fun attachView(intents: Observable<A>): Observable<S> {
-            return attachViewMethod(intents,
+        fun attachView(actions: Observable<A>): Observable<S> {
+            return attachViewMethod(actions,
                     stateSubject,
                     actionProcessor,
                     reducer,
@@ -86,7 +86,7 @@ interface KontentContract {
     }
 }
 
-fun <I, T : I> getInitialIntentFilter(clazz: Class<T>): ObservableTransformer<I, I> {
+fun <I, T : I> getInitialActionFilter(clazz: Class<T>): ObservableTransformer<I, I> {
     var emittedCount = 0
     return ObservableTransformer {
         it.filter { (clazz.isInstance(it) && emittedCount < 1) || !clazz.isInstance(it) }
@@ -97,14 +97,14 @@ fun <I, T : I> getInitialIntentFilter(clazz: Class<T>): ObservableTransformer<I,
     }
 }
 
-internal fun <A, R, S> attachViewMethod(intents: Observable<A>,
+internal fun <A, R, S> attachViewMethod(actions: Observable<A>,
                                         subscriber: BehaviorSubject<S>,
                                         actionProcessor: ObservableTransformer<A, R>,
                                         reducer: BiFunction<S, R, S>,
                                         getLastState: () -> S,
                                         postProcessor: (Function1<S, S>)?,
-                                        intentFilter: ObservableTransformer<A, A>?): Observable<S> {
-    val obs = intentFilter.let { intents.compose(intentFilter) } ?: intents
+                                        actionFilter: ObservableTransformer<A, A>?): Observable<S> {
+    val obs = actionFilter.let { actions.compose(actionFilter) } ?: actions
     obs.applyMvi(actionProcessor, reducer, getLastState, postProcessor)
             .filterOnComplete()
             .subscribe(subscriber)
