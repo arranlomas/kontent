@@ -73,6 +73,26 @@ class MainViewModel @Inject constructor(scoreRepository: IScoreRepository) : Kon
 )
 ```
 
+### Reducer
+```
+val reducer = KontentReducer<MainResults, MainViewState>({ result, previousState ->
+    when (result) {
+        is MainResults.IncrementTeamA -> previousState.copy(teamAScore = previousState.teamAScore + 1)
+        is MainResults.IncrementTeamB -> previousState.copy(teamBScore = previousState.teamBScore + 1)
+        is MainResults.LoadPreviousScoreLoading -> previousState.copy(loading = true, error = null)
+        is MainResults.LoadPreviousScoreError -> previousState.copy(loading = false, error = result.error)
+        is MainResults.LoadPreviousScoreSuccess -> previousState.copy(loading = false, error = null, teamAScore = result.teamAScore, teamBScore = result.teamBScore)
+    }
+})
+```
+
+### Other compoments
+[Action Processor](https://github.com/arranlomas/kontent/blob/da23563095eca746798e60bcbf8f707bc8abbe0a/app/src/main/java/com/arranlomas/mvisample/MainActivity.kt#L65)
+
+[Load previous score](https://github.com/arranlomas/kontent/blob/da23563095eca746798e60bcbf8f707bc8abbe0a/app/src/main/java/com/arranlomas/mvisample/MainActivity.kt#L76)
+
+[Fake repository](https://github.com/arranlomas/kontent/blob/da23563095eca746798e60bcbf8f707bc8abbe0a/app/src/main/java/com/arranlomas/mvisample/ScoreRepository.kt#L13)
+
 ## Things of note here
 
 #### Dagger
@@ -99,8 +119,32 @@ This is a function that checks to see if the intent was the initial intent sent.
 #### Render
 The view has one overriden function that is render. This takes a view state and works out how to presenter it to the user.
 
+### Base Classes
+[AndroidVideModel](https://github.com/arranlomas/kontent/blob/da23563095eca746798e60bcbf8f707bc8abbe0a/kontent-android-viewmodel/src/main/java/com/arranlomas/kontent_android_viewmodel/commons/objects/KontentAndroidViewModel.kt#L13)
+
+[ViwModel](https://github.com/arranlomas/kontent/blob/da23563095eca746798e60bcbf8f707bc8abbe0a/kontent-core/src/main/java/com/arranlomas/kontent/commons/objects/KontentViewModel.kt#L8)
+
+[Base ActionProcessor](https://github.com/arranlomas/kontent/blob/da23563095eca746798e60bcbf8f707bc8abbe0a/kontent-core/src/main/java/com/arranlomas/kontent/commons/functions/ActionProcessors.kt#L9)
+
+[Master ActionProcess](https://github.com/arranlomas/kontent/blob/master/kontent-core/src/main/java/com/arranlomas/kontent/commons/functions/MasterActionProcessors.kt) - Used to map actions to the action processor for the type of action.
+
+[Reducer](https://github.com/arranlomas/kontent/blob/da23563095eca746798e60bcbf8f707bc8abbe0a/kontent-core/src/main/java/com/arranlomas/kontent/commons/functions/Reducer.kt#L7)
+
+[Activity](https://github.com/arranlomas/kontent/blob/da23563095eca746798e60bcbf8f707bc8abbe0a/kontent-core/src/main/java/com/arranlomas/kontent/commons/objects/KontentActivity.kt#L7)
+
+[DaggerActivity](https://github.com/arranlomas/kontent/blob/da23563095eca746798e60bcbf8f707bc8abbe0a/kontent-dagger/src/main/java/com/arranlomas/daggerkontent/KontentDaggerActivity.kt#L15)
+
+[DaggerSupportActivity](https://github.com/arranlomas/kontent/blob/da23563095eca746798e60bcbf8f707bc8abbe0a/kontent-dagger-support/src/main/java/com/arranlomas/kotentdaggersupport/KontentDaggerSupportActivity.kt#L14)
+
+[Fragment](https://github.com/arranlomas/kontent/blob/da23563095eca746798e60bcbf8f707bc8abbe0a/kontent-core/src/main/java/com/arranlomas/kontent/commons/objects/KontentFragment.kt#L7)
+
+[DaggerFragment](https://github.com/arranlomas/kontent/blob/da23563095eca746798e60bcbf8f707bc8abbe0a/kontent-dagger/src/main/java/com/arranlomas/daggerkontent/KontentDaggerFragment.kt#L9)
+
+[DaggerSupportFragment](https://github.com/arranlomas/kontent/blob/da23563095eca746798e60bcbf8f707bc8abbe0a/kontent-dagger-support/src/main/java/com/arranlomas/kotentdaggersupport/KontentDaggerSupportFragment.kt#L11)
 
 
-## Warning
-This library is heavily dependant on the RxJava 2, Kotlin, Android's ViewModel and Dagger 2
+## Fair Warning
+This library is heavily dependant on the RxJava 2, Kotlin and Android's ViewModel.
+
+This library uses inheritence, I would suggest adding an extra abstraction between `kontent` classes and your implementations with something like a `BaseActivity` that extends `KontentActivty`.
 
