@@ -27,7 +27,7 @@ This little readme isn't enough to cover what mvi is. But in a nutshell it is a 
 
 ## Usage
 
-A full example can be found in the app folder of this repository. Below is a simple example of the View and the ViewModel
+A full example can be found in the app folder of this repository. Below is a simple example of the Activity, ViewModel and Reducer
 
 ### MainActivity
 ```
