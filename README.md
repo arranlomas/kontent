@@ -4,6 +4,11 @@ This small library is created to help reduce the boilerplate involved in using M
 
 This library of base components takes inspiration from [Benoît Quenaudon’s excelent talk at Droidcon NYC 2017](https://medium.com/r/?url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DPXBXcHQeDLE) and the [Hannes Dorfmann’s series](https://medium.com/r/?url=http%3A%2F%2Fhannesdorfmann.com%2Fandroid%2Fmosby3-mvi-1).
 
+### Example and Usage
+(Small example)[https://github.com/arranlomas/kontent/tree/e51aa745e94c3bb93442b8eef348bd01a2635bc6/app/src/main/java/com/arranlomas/mvisample] - Most basic single page score counting application (more details about how it works in (here)[https://github.com/arranlomas/kontent#usage]
+
+(Large(ish) example)[https://github.com/arranlomas/Trickl] - Multipage application with many dependencies published to the appstore.
+
 ### What this library gives you
 * Simplicity
 * Confirguration changes are handled
