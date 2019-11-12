@@ -6,10 +6,10 @@ import io.reactivex.annotations.CheckReturnValue
 import io.reactivex.annotations.SchedulerSupport
 import io.reactivex.schedulers.Schedulers
 
-fun <T> Observable<T>.composeIo(): Observable<T> = compose<T>({
+fun <T> Observable<T>.composeIo(): Observable<T> = compose<T> {
     it.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-})
+}
 
 @CheckReturnValue
 @SchedulerSupport(SchedulerSupport.NONE)
