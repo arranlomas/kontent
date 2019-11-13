@@ -1,6 +1,6 @@
 apply plugin: 'com.android.library'
-apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
 def globalConf = rootProject.ext
 
 android {
@@ -27,11 +27,11 @@ android {
 
 dependencies {
     Map<String, String> dependencies = globalConf.commonDependencies
-    androidTestCompile (dependencies.espressoCore, {
+    androidTestImplementation (dependencies.espressoCore, {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     androidTestImplementation dependencies.testRunner
-    testCompile dependencies.jUnit
+    testImplementation dependencies.jUnit
 
     implementation dependencies.appCompat
     implementation dependencies.kotlinStdLib
@@ -39,9 +39,9 @@ dependencies {
 
     kapt dependencies.daggerCompiler
     kapt dependencies.daggerAnnotationProcessor
-    compile dependencies.dagger
-    compile dependencies.daggerAndroidSupport
+    implementation dependencies.dagger
+    implementation dependencies.daggerAndroidSupport
 
-    compile project(':kontent-core')
+    implementation project(':kontent-core')
 }
 

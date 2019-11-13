@@ -27,17 +27,17 @@ android {
 
 dependencies {
     Map<String, String> dependencies = globalConf.commonDependencies
-    androidTestCompile (dependencies.espressoCore, {
+    androidTestImplementation (dependencies.espressoCore, {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     androidTestImplementation dependencies.testRunner
-    testCompile dependencies.jUnit
+    testImplementation dependencies.jUnit
 
     implementation dependencies.appCompat
     implementation dependencies.kotlinStdLib
 
-    compile project(path: ':kontent-core')
+    api project(path: ':kontent-core')
 
-    compile dependencies.lifecycleExtensions
+    implementation dependencies.lifecycleExtensions
     kapt dependencies.lifecycleCompiler
 }

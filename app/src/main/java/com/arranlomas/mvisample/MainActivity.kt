@@ -84,7 +84,7 @@ fun loadPreviousScoreProcessor(scoreRepository: IScoreRepository) = KontentActio
         loading = MainResults.LoadPreviousScoreLoading()
 )
 
-val reducer = KontentReducer<MainResults, MainViewState>({ result, previousState ->
+val reducer = KontentReducer<MainResults, MainViewState> { result, previousState ->
     when (result) {
         is MainResults.IncrementTeamA -> previousState.copy(teamAScore = previousState.teamAScore + 1)
         is MainResults.IncrementTeamB -> previousState.copy(teamBScore = previousState.teamBScore + 1)
@@ -92,7 +92,7 @@ val reducer = KontentReducer<MainResults, MainViewState>({ result, previousState
         is MainResults.LoadPreviousScoreError -> previousState.copy(loading = false, error = result.error)
         is MainResults.LoadPreviousScoreSuccess -> previousState.copy(loading = false, error = null, teamAScore = result.teamAScore, teamBScore = result.teamBScore)
     }
-})
+}
 
 sealed class MainActions : KontentAction() {
     class LoadPreviousScore : MainActions()
